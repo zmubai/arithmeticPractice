@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		DB3A534E222D5F6300146A52 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DB3A534D222D5F6300146A52 /* main.m */; };
+		DB3A5356222D5F9F00146A52 /* BNString.c in Sources */ = {isa = PBXBuildFile; fileRef = DB3A5355222D5F9F00146A52 /* BNString.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,8 @@
 /* Begin PBXFileReference section */
 		DB3A534A222D5F6300146A52 /* 数据结构算法练习 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "数据结构算法练习"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB3A534D222D5F6300146A52 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		DB3A5354222D5F9F00146A52 /* BNString.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BNString.h; sourceTree = "<group>"; };
+		DB3A5355222D5F9F00146A52 /* BNString.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = BNString.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +61,8 @@
 			isa = PBXGroup;
 			children = (
 				DB3A534D222D5F6300146A52 /* main.m */,
+				DB3A5354222D5F9F00146A52 /* BNString.h */,
+				DB3A5355222D5F9F00146A52 /* BNString.c */,
 			);
 			path = "数据结构算法练习";
 			sourceTree = "<group>";
@@ -118,6 +123,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB3A5356222D5F9F00146A52 /* BNString.c in Sources */,
 				DB3A534E222D5F6300146A52 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
