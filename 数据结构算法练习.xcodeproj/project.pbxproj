@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		DB3A534E222D5F6300146A52 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DB3A534D222D5F6300146A52 /* main.m */; };
 		DB3A5356222D5F9F00146A52 /* BNString.c in Sources */ = {isa = PBXBuildFile; fileRef = DB3A5355222D5F9F00146A52 /* BNString.c */; };
+		DB3A5359222D89F500146A52 /* BNArray.c in Sources */ = {isa = PBXBuildFile; fileRef = DB3A5358222D89F500146A52 /* BNArray.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,6 +29,8 @@
 		DB3A534D222D5F6300146A52 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		DB3A5354222D5F9F00146A52 /* BNString.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BNString.h; sourceTree = "<group>"; };
 		DB3A5355222D5F9F00146A52 /* BNString.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = BNString.c; sourceTree = "<group>"; };
+		DB3A5357222D89F500146A52 /* BNArray.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BNArray.h; sourceTree = "<group>"; };
+		DB3A5358222D89F500146A52 /* BNArray.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = BNArray.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +66,8 @@
 				DB3A534D222D5F6300146A52 /* main.m */,
 				DB3A5354222D5F9F00146A52 /* BNString.h */,
 				DB3A5355222D5F9F00146A52 /* BNString.c */,
+				DB3A5357222D89F500146A52 /* BNArray.h */,
+				DB3A5358222D89F500146A52 /* BNArray.c */,
 			);
 			path = "数据结构算法练习";
 			sourceTree = "<group>";
@@ -124,6 +129,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DB3A5356222D5F9F00146A52 /* BNString.c in Sources */,
+				DB3A5359222D89F500146A52 /* BNArray.c in Sources */,
 				DB3A534E222D5F6300146A52 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

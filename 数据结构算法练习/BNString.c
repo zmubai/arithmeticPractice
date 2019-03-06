@@ -61,11 +61,17 @@ int myAtoi(char* str) {
 void itoa (int n ,char s[])
 {
     int flag = 1;
-    if(n < 0) flag = -1;
+    if(n < 0)
+    {
+        flag = -1;
+        //绝对值
+        n = -1 * n;
+    }
     int i = 0;
     do {
         s[i] = n % 10 + '0';
         n = n / 10;
+        //结束的时候多加了一
         i ++;
     } while (n > 0);
     if(flag == -1) printf("%c",'-');
@@ -73,3 +79,5 @@ void itoa (int n ,char s[])
         printf("%c",s[j]);
     }
 }
+
+///====
