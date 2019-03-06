@@ -10,6 +10,7 @@
 		DB3A534E222D5F6300146A52 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DB3A534D222D5F6300146A52 /* main.m */; };
 		DB3A5356222D5F9F00146A52 /* BNString.c in Sources */ = {isa = PBXBuildFile; fileRef = DB3A5355222D5F9F00146A52 /* BNString.c */; };
 		DB3A5359222D89F500146A52 /* BNArray.c in Sources */ = {isa = PBXBuildFile; fileRef = DB3A5358222D89F500146A52 /* BNArray.c */; };
+		DB59B1AB22300A64009C60EB /* BNSort.c in Sources */ = {isa = PBXBuildFile; fileRef = DB59B1AA22300A64009C60EB /* BNSort.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,6 +32,8 @@
 		DB3A5355222D5F9F00146A52 /* BNString.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = BNString.c; sourceTree = "<group>"; };
 		DB3A5357222D89F500146A52 /* BNArray.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BNArray.h; sourceTree = "<group>"; };
 		DB3A5358222D89F500146A52 /* BNArray.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = BNArray.c; sourceTree = "<group>"; };
+		DB59B1A922300A64009C60EB /* BNSort.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BNSort.h; sourceTree = "<group>"; };
+		DB59B1AA22300A64009C60EB /* BNSort.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = BNSort.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +71,8 @@
 				DB3A5355222D5F9F00146A52 /* BNString.c */,
 				DB3A5357222D89F500146A52 /* BNArray.h */,
 				DB3A5358222D89F500146A52 /* BNArray.c */,
+				DB59B1A922300A64009C60EB /* BNSort.h */,
+				DB59B1AA22300A64009C60EB /* BNSort.c */,
 			);
 			path = "数据结构算法练习";
 			sourceTree = "<group>";
@@ -129,6 +134,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DB3A5356222D5F9F00146A52 /* BNString.c in Sources */,
+				DB59B1AB22300A64009C60EB /* BNSort.c in Sources */,
 				DB3A5359222D89F500146A52 /* BNArray.c in Sources */,
 				DB3A534E222D5F6300146A52 /* main.m in Sources */,
 			);
