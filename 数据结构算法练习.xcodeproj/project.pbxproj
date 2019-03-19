@@ -11,6 +11,8 @@
 		DB3A5356222D5F9F00146A52 /* BNString.c in Sources */ = {isa = PBXBuildFile; fileRef = DB3A5355222D5F9F00146A52 /* BNString.c */; };
 		DB3A5359222D89F500146A52 /* BNArray.c in Sources */ = {isa = PBXBuildFile; fileRef = DB3A5358222D89F500146A52 /* BNArray.c */; };
 		DB59B1AB22300A64009C60EB /* BNSort.c in Sources */ = {isa = PBXBuildFile; fileRef = DB59B1AA22300A64009C60EB /* BNSort.c */; };
+		DBA57DC62237FE4300ED878C /* BNDyPlan.c in Sources */ = {isa = PBXBuildFile; fileRef = DBA57DC52237FE4300ED878C /* BNDyPlan.c */; };
+		DBA57DCA223820B700ED878C /* BNBinaryTree.c in Sources */ = {isa = PBXBuildFile; fileRef = DBA57DC9223820B700ED878C /* BNBinaryTree.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -34,6 +36,10 @@
 		DB3A5358222D89F500146A52 /* BNArray.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = BNArray.c; sourceTree = "<group>"; };
 		DB59B1A922300A64009C60EB /* BNSort.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BNSort.h; sourceTree = "<group>"; };
 		DB59B1AA22300A64009C60EB /* BNSort.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = BNSort.c; sourceTree = "<group>"; };
+		DBA57DC42237FE4300ED878C /* BNDyPlan.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BNDyPlan.h; sourceTree = "<group>"; };
+		DBA57DC52237FE4300ED878C /* BNDyPlan.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = BNDyPlan.c; sourceTree = "<group>"; };
+		DBA57DC8223820B700ED878C /* BNBinaryTree.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BNBinaryTree.h; sourceTree = "<group>"; };
+		DBA57DC9223820B700ED878C /* BNBinaryTree.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = BNBinaryTree.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +79,10 @@
 				DB3A5358222D89F500146A52 /* BNArray.c */,
 				DB59B1A922300A64009C60EB /* BNSort.h */,
 				DB59B1AA22300A64009C60EB /* BNSort.c */,
+				DBA57DC42237FE4300ED878C /* BNDyPlan.h */,
+				DBA57DC52237FE4300ED878C /* BNDyPlan.c */,
+				DBA57DC8223820B700ED878C /* BNBinaryTree.h */,
+				DBA57DC9223820B700ED878C /* BNBinaryTree.c */,
 			);
 			path = "数据结构算法练习";
 			sourceTree = "<group>";
@@ -134,8 +144,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				DB3A5356222D5F9F00146A52 /* BNString.c in Sources */,
+				DBA57DC62237FE4300ED878C /* BNDyPlan.c in Sources */,
 				DB59B1AB22300A64009C60EB /* BNSort.c in Sources */,
 				DB3A5359222D89F500146A52 /* BNArray.c in Sources */,
+				DBA57DCA223820B700ED878C /* BNBinaryTree.c in Sources */,
 				DB3A534E222D5F6300146A52 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

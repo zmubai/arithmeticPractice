@@ -11,7 +11,6 @@
 ///quickSort 参考BNArray数组取交集
 
 
-
 ///归并排序
 ///自上而下的归并 化整为零的处理方式
 
@@ -93,3 +92,65 @@ void mergeSore1(int *a, int lo , int hi)
 
 
 ///================================================================================
+///n 个有序链表，输出一个有序链表
+struct Node
+{
+    int var;
+    struct Node *next;
+};
+
+///归并生生一个新的有序链表
+struct Node* subSort(struct Node *link0,struct Node *link1)
+{
+    struct Node *head = (struct Node*)malloc(sizeof(struct Node));
+    struct Node *cur0 = link0->next;
+    struct Node *cur1 = link1->next;
+    struct Node *resutCur = head;
+    while (cur0 != NULL || cur1 != NULL) {
+        if(cur0 == NULL)
+        {
+            resutCur->var = cur1->var;
+            cur1 = cur1->next;
+        }
+        else if(cur1 == NULL)
+        {
+            resutCur->var = cur0->var;
+            cur0 = cur0->next;
+        }
+        else
+        {
+            int max = cur1->var > cur0->var ?  cur1->var:cur0->var;
+            resutCur->var = max;
+        }
+        resutCur ->next = (struct Node*)malloc(sizeof(struct Node));
+        resutCur = resutCur ->next;
+    }
+    resutCur = NULL;
+    return head;
+}
+
+struct Node* sort(int  n , struct Node **heads)
+{
+    if (n == 0) {
+        return NULL;
+    }
+    if(n==1)
+    {
+        return heads[0];
+    }
+    struct Node *head;
+    ///第一第二个归并生成一个有序链表
+    head = subSort(heads[0],heads[1]);
+    for (int i = 2; i < n ; i ++) {
+        ///遍历，合成新链表
+       head = subSort(head,heads[i]);
+    }
+    return head;
+}
+
+///更好的思路，（k个长度为n的链表）
+/*1.用n个链表的头元素生成一个k大小的最小堆
+ 2.取出第一个元素
+ 3.然后再插入取出元素所在链表的下一个元素插入，并调整堆
+ 4.重复2-3，直到所有元素取出。时间复杂度 k(nlongk);
+ */

@@ -81,3 +81,36 @@ void itoa (int n ,char s[])
 }
 
 ///====
+//leetcode3. 无重复字符的最长子串
+int lengthOfLongestSubstring(char* s) {
+    if(*s == NULL) return 0;
+    if(*s == '\0') return 1;
+    
+    int max = 1;
+    int si = 0;//startIndex
+    for(int i = 0; *(s+i) != '\0';i++)
+    {
+        for(int j = si;j < i ; j ++)
+        {
+            if(*(s+j) == *(s+i))
+            {
+                if(j - si + 1 > max) max = j - si + 1;
+                ///重复的下标的下一个坐标作为新起点。
+                si = j + 1;
+                break;
+            }
+            
+            if( j == i-1 && i-si+1 > max)
+            {
+                
+                max = i- si +1;
+                // printf("i=%ld,max=%ld\n",i,max);
+            }
+            else if(j-si+1 > max)
+            {
+                max = j- si +1;
+            }
+        }
+    }
+    return max;
+}

@@ -10,6 +10,7 @@
 #include "BNString.h"
 #include <limits.h>
 #include "BNArray.h"
+#include "BNDyPlan.h"
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
@@ -25,10 +26,14 @@ int main(int argc, const char * argv[]) {
 //        int *bitmap =  malloc(sizeof(int) *size);
 //        printf("%d\n",res);
 //        printf("%d\n",res);
-        int a[] = {1,2,2,1};
-        int b[] = {2,2};
-        int size = 1;
-        intersection(&a, 4, &b,2, &size);
+        //======
+//        int a[] = {1,2,2,1};
+//        int b[] = {2,2};
+//        int size = 1;
+//        intersection(&a, 4, &b,2, &size);
+        //======
+        int x = climbStairs(3);
+        
     }
     return 0;
 }
