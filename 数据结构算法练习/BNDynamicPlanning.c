@@ -81,3 +81,58 @@ int rob(int* nums, int numsSize) {
     }
     return fn1;
 }
+
+/*
+ 300. 最长上升子序列
+ 给定一个无序的整数数组，找到其中最长上升子序列的长度。
+ 
+ 示例:
+ 
+ 输入: [10,9,2,5,3,7,101,18]
+ 输出: 4
+ 解释: 最长的上升子序列是 [2,3,7,101]，它的长度是 4。
+ 说明:
+ 
+ 可能会有多种最长上升子序列的组合，你只需要输出对应的长度即可。
+ 你算法的时间复杂度应该为 O(n2) 。
+ 进阶: 你能将算法的时间复杂度降低到 O(n log n) 吗?
+ */
+// statu: i did
+int lengthOfLIS(int* nums, int numsSize) {
+    if (nums == NULL || numsSize == 0) {
+        return 0;
+    }
+    int *p = (int*)malloc(sizeof(int)*numsSize);
+    memset(p,0,sizeof(int)*numsSize);
+    
+    p[0] = 1;
+    int res = 1;//记录全局最大连续升序列
+    ///复杂度 n * n
+    for (int i = 0 ; i < numsSize; i ++) {
+        int max = 0;
+        for (int j = 0; j< i;j ++) {
+            ///考虑下当前最大升序列，会受到前面的比它小的p的影响。并遍历获取做大p ，max+1为p[i];不是单纯的动态规划，动态规划的基础上还要遍历前面的元素，获取最大的p。
+            if (nums[j]<nums[i]) {
+                if (max < p[j])
+                {
+                    max = p[j];
+                }
+            }
+        }
+        p[i] = max + 1;//当前位置最大升序列
+        if(res < p[i]) res = p[i];
+    }
+    return res;
+}
+
+/*
+ 高级解法，贪心选择 + 二分查找
+ https://blog.csdn.net/lw_power/article/details/80758674
+ */
+int lengthOfLIS1(int* nums, int numsSize)
+{
+    
+    
+    return 0;
+}
+
