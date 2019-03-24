@@ -11,6 +11,7 @@
 #include <limits.h>
 #include "BNArray.h"
 #include "BNDyPlan.h"
+#include "BNDynamicPlanning.h"
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
@@ -32,7 +33,12 @@ int main(int argc, const char * argv[]) {
 //        int size = 1;
 //        intersection(&a, 4, &b,2, &size);
         //======
-        int x = climbStairs(3);
+//        int x = climbStairs(3);
+        //======
+//        int a[] = {10,9,2,5,3,7,101,18};
+//        int a[] =  {18,55,66,2,3,54};
+        int a[] = {3,5,6,2,5,4,19,5,6,7,12};
+        int len = lengthOfLIS1(a, 10);
         
     }
     return 0;

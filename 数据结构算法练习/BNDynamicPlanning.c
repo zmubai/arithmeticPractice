@@ -129,10 +129,52 @@ int lengthOfLIS(int* nums, int numsSize) {
  高级解法，贪心选择 + 二分查找
  https://blog.csdn.net/lw_power/article/details/80758674
  */
+
+int insertAndTryReplaceByBinarySearch(int *nums,int len,int dst)
+{
+    ///如果比最后的元素还大，插入
+    if (dst > nums[len - 1]) {
+        nums[len] = dst;
+        return 1;
+    }
+    ///查找合适的位置替换，二分查找第一个比他小的元素，并替换这个元素的下一个元素。
+    int mid = 0;
+    int left = 0;
+    int right = len - 1;
+    ///do while 比较合适，不然结束条件不好写
+    do {
+        mid = left + (right - left) / 2;
+        printf("mid:%d  left:%d  right:%d\n",mid,left,right);
+        if (nums[mid] > dst) {
+            ///保留当前mid的值，可能作为第一个比dst大。
+            right = mid;
+        }
+        else if(nums[mid] < dst)
+        {
+            left = mid + 1;
+        }
+        else
+        {
+            return 0;
+        }
+    } while (left < right);
+    nums[left] = dst;
+    return 0;
+}
+
+
 int lengthOfLIS1(int* nums, int numsSize)
 {
-    
-    
-    return 0;
+    if(nums == NULL || numsSize == 0) return 0;
+    int *tempNums = (int *)malloc(sizeof(int) * numsSize);
+    int len = 1;
+    tempNums[0] = nums[0];
+    for (int i = 1; i < numsSize; i ++) {
+      int res  = insertAndTryReplaceByBinarySearch(tempNums, len, nums[i]);
+        if (res == 1) {
+            len ++;
+        }
+    }
+    return len;
 }
 

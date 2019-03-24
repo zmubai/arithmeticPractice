@@ -69,7 +69,7 @@ int minCostClimbingStairs(int* cost, int costSize) {
     fn[0] = 0;
     fn[1] = 0;
     fn[2] = min(cost[0],cost[1]);
-    for(int i = 3; i < costSize,i++)
+    for(int i = 3; i < costSize;i++)
     {
         ///fn[i]，为落实到第 i 不得动态值，包含本值（+ cost[i]），以提供给后面使用
         fn[i] = min(fn[i-1],fn[i-2]) + cost[i];

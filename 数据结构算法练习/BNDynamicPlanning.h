@@ -10,5 +10,5 @@
 #define BNDynamicPlanning_h
 
 #include <stdio.h>
-
+int lengthOfLIS1(int* nums, int numsSize);
 #endif /* BNDynamicPlanning_h */
