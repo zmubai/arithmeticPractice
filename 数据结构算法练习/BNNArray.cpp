@@ -8,6 +8,7 @@
 
 #include "BNNArray.hpp"
 #include <map>
+#include <set>
 /*
  217. 存在重复元素
  给定一个整数数组，判断是否存在重复元素。
@@ -67,7 +68,7 @@ bool containsDuplicate(vector<int>& nums) {
  输入: nums = [1,5,9,1,5,9], k = 2, t = 3
  输出: false
  */
-bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t) {
+bool containsNearbyAlmostDuplicatexx(vector<int>& nums, int k, int t) {
 ///if k 和 t确定了有限范围，那么可以通过建立键值对去查找。
     map<long , long >  mapNums;
     ///k 为下标之差最大值，t为值之差绝对值最大值
@@ -117,3 +118,44 @@ bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t) {
     }
     return false;
 }
+
+//1 5 1 5 9 k = 2  t = 3 //使用有序集合set
+bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t) {
+    //k index之差
+    //t value之差
+    set<long> window;//维护一个长度为k的有序窗口
+    long tt = t;
+    for (int i = 0 ; i < nums.size(); i ++) {
+        //擦除某个值
+        if (i > k) window.erase(nums[i - k - 1]);
+        //获取第一个等于或则大于入参的值 x>=nums[i]-t
+        //  -t<=|nums[i]-x|<=t  =>  x>=nums[i]-t && x<=(nums[i]+t)
+        set<long>::iterator it = window.lower_bound(nums[i] - tt);
+        if(it!= window.end() && *(it) <= nums[i] + tt) return true;
+        window.insert(nums[i]);
+    }
+    return false;
+}
+
+/*
+ 219. 存在重复元素 II
+ 给定一个整数数组和一个整数 k，判断数组中是否存在两个不同的索引 i 和 j，使得 nums [i] = nums [j]，并且 i 和 j 的差的绝对值最大为 k。
+ */
+bool containsNearbyDuplicate(vector<int>& nums, int k) {
+    set<long> window;
+    ///考虑长度问题，如果算术式了有一个是long的话，底层就会转成long型。
+    long kk = k ;
+    ///->向右遍历
+    for (int i = 0 ; i < nums.size(); i ++) {
+    /// 0 1 2 擦除最左边的
+        if(i>k) window.erase(nums[i - kk - 1]);
+        ///<-向左查找最近的数匹配
+        set<long>::iterator it = window.lower_bound(nums[i]);
+        if (it != window.end() && *it == nums[i]) {
+            return true;
+        }
+        window.insert(nums[i]);
+    }
+    return false;
+}
+
