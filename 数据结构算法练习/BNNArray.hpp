@@ -23,3 +23,4 @@ public:
     bool containsDuplicate(vector<int>& nums);
 };
 #endif /* BNNArray_hpp */
+
