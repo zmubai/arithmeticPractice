@@ -8,12 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		DB3A534E222D5F6300146A52 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DB3A534D222D5F6300146A52 /* main.m */; };
-		DB3A5356222D5F9F00146A52 /* BNString.c in Sources */ = {isa = PBXBuildFile; fileRef = DB3A5355222D5F9F00146A52 /* BNString.c */; };
 		DB3A5359222D89F500146A52 /* BNArray.c in Sources */ = {isa = PBXBuildFile; fileRef = DB3A5358222D89F500146A52 /* BNArray.c */; };
 		DB577E1022413A8E00B76579 /* BNDynamicPlanning.c in Sources */ = {isa = PBXBuildFile; fileRef = DB577E0F22413A8E00B76579 /* BNDynamicPlanning.c */; };
 		DB59B1AB22300A64009C60EB /* BNSort.c in Sources */ = {isa = PBXBuildFile; fileRef = DB59B1AA22300A64009C60EB /* BNSort.c */; };
 		DB6413C722491B7E0008483B /* BNNArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DB6413C522491B7E0008483B /* BNNArray.cpp */; };
 		DB6413CA2253C4CE0008483B /* linkedList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DB6413C82253C4CE0008483B /* linkedList.cpp */; };
+		DB68D45422564DCF005EE8DA /* BNstring.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DB68D45222564DCF005EE8DA /* BNstring.cpp */; };
+		DB68D4572256520F005EE8DA /* BNTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB68D4562256520F005EE8DA /* BNTest.mm */; };
+		DB68D45A225653EB005EE8DA /* BNCString.c in Sources */ = {isa = PBXBuildFile; fileRef = DB68D459225653EB005EE8DA /* BNCString.c */; };
 		DBA57DC62237FE4300ED878C /* BNDyPlan.c in Sources */ = {isa = PBXBuildFile; fileRef = DBA57DC52237FE4300ED878C /* BNDyPlan.c */; };
 		DBA57DCA223820B700ED878C /* BNBinaryTree.c in Sources */ = {isa = PBXBuildFile; fileRef = DBA57DC9223820B700ED878C /* BNBinaryTree.c */; };
 /* End PBXBuildFile section */
@@ -33,8 +35,6 @@
 /* Begin PBXFileReference section */
 		DB3A534A222D5F6300146A52 /* 数据结构算法练习 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "数据结构算法练习"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB3A534D222D5F6300146A52 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		DB3A5354222D5F9F00146A52 /* BNString.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BNString.h; sourceTree = "<group>"; };
-		DB3A5355222D5F9F00146A52 /* BNString.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = BNString.c; sourceTree = "<group>"; };
 		DB3A5357222D89F500146A52 /* BNArray.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BNArray.h; sourceTree = "<group>"; };
 		DB3A5358222D89F500146A52 /* BNArray.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = BNArray.c; sourceTree = "<group>"; };
 		DB577E0E22413A8E00B76579 /* BNDynamicPlanning.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BNDynamicPlanning.h; sourceTree = "<group>"; };
@@ -45,6 +45,12 @@
 		DB6413C622491B7E0008483B /* BNNArray.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BNNArray.hpp; sourceTree = "<group>"; };
 		DB6413C82253C4CE0008483B /* linkedList.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = linkedList.cpp; sourceTree = "<group>"; };
 		DB6413C92253C4CE0008483B /* linkedList.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = linkedList.hpp; sourceTree = "<group>"; };
+		DB68D45222564DCF005EE8DA /* BNstring.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BNstring.cpp; sourceTree = "<group>"; };
+		DB68D45322564DCF005EE8DA /* BNstring.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BNstring.hpp; sourceTree = "<group>"; };
+		DB68D4552256520F005EE8DA /* BNTest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BNTest.h; sourceTree = "<group>"; };
+		DB68D4562256520F005EE8DA /* BNTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BNTest.mm; sourceTree = "<group>"; };
+		DB68D458225653EB005EE8DA /* BNCString.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BNCString.h; sourceTree = "<group>"; };
+		DB68D459225653EB005EE8DA /* BNCString.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = BNCString.c; sourceTree = "<group>"; };
 		DBA57DC42237FE4300ED878C /* BNDyPlan.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BNDyPlan.h; sourceTree = "<group>"; };
 		DBA57DC52237FE4300ED878C /* BNDyPlan.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = BNDyPlan.c; sourceTree = "<group>"; };
 		DBA57DC8223820B700ED878C /* BNBinaryTree.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BNBinaryTree.h; sourceTree = "<group>"; };
@@ -82,8 +88,8 @@
 			isa = PBXGroup;
 			children = (
 				DB3A534D222D5F6300146A52 /* main.m */,
-				DB3A5354222D5F9F00146A52 /* BNString.h */,
-				DB3A5355222D5F9F00146A52 /* BNString.c */,
+				DB68D4552256520F005EE8DA /* BNTest.h */,
+				DB68D4562256520F005EE8DA /* BNTest.mm */,
 				DB3A5357222D89F500146A52 /* BNArray.h */,
 				DB3A5358222D89F500146A52 /* BNArray.c */,
 				DB6413C522491B7E0008483B /* BNNArray.cpp */,
@@ -98,6 +104,10 @@
 				DB577E0F22413A8E00B76579 /* BNDynamicPlanning.c */,
 				DB6413C92253C4CE0008483B /* linkedList.hpp */,
 				DB6413C82253C4CE0008483B /* linkedList.cpp */,
+				DB68D45222564DCF005EE8DA /* BNstring.cpp */,
+				DB68D45322564DCF005EE8DA /* BNstring.hpp */,
+				DB68D458225653EB005EE8DA /* BNCString.h */,
+				DB68D459225653EB005EE8DA /* BNCString.c */,
 			);
 			path = "数据结构算法练习";
 			sourceTree = "<group>";
@@ -159,14 +169,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				DB577E1022413A8E00B76579 /* BNDynamicPlanning.c in Sources */,
-				DB3A5356222D5F9F00146A52 /* BNString.c in Sources */,
+				DB68D45422564DCF005EE8DA /* BNstring.cpp in Sources */,
 				DB6413C722491B7E0008483B /* BNNArray.cpp in Sources */,
 				DBA57DC62237FE4300ED878C /* BNDyPlan.c in Sources */,
+				DB68D45A225653EB005EE8DA /* BNCString.c in Sources */,
 				DB59B1AB22300A64009C60EB /* BNSort.c in Sources */,
 				DB3A5359222D89F500146A52 /* BNArray.c in Sources */,
 				DB6413CA2253C4CE0008483B /* linkedList.cpp in Sources */,
 				DBA57DCA223820B700ED878C /* BNBinaryTree.c in Sources */,
 				DB3A534E222D5F6300146A52 /* main.m in Sources */,
+				DB68D4572256520F005EE8DA /* BNTest.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

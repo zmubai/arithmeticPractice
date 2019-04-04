@@ -1,12 +1,12 @@
 //
-//  BNString.c
+//  BNCString.c
 //  数据结构算法练习
 //
-//  Created by zengbailiang on 2019/3/4.
+//  Created by zengbailiang on 2019/4/4.
 //  Copyright © 2019年 zengbailiang. All rights reserved.
 //
 
-#include "BNString.h"
+#include "BNCString.h"
 #include <limits.h>
 /*请你来实现一个 atoi 函数，使其能将字符串转换成整数。*/
 int myAtoi(char* str) {
