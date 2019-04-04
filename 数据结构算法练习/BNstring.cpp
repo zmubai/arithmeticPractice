@@ -26,6 +26,9 @@
  输入：["H","a","n","n","a","h"]
  输出：["h","a","n","n","a","H"]
  */
+/*
+ 前后指针交换
+ */
 void reverseString(vector<char>& s) {
     long left = 0 ;
     long right = s.size() - 1;
@@ -35,5 +38,15 @@ void reverseString(vector<char>& s) {
         s[right] = temp;
         left++;
         right--;
+    }
+}
+
+///看了答案中比较好的处理方式，改写
+void reverseString1(vector<char>& s) {
+    long size = s.size();
+    for (long i = 0; i < size / 2; i ++) {
+        long temp = s[i];
+        s[i] = s[size - i - 1];
+        s[size - i - 1] = temp;
     }
 }
