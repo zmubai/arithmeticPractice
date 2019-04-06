@@ -8,6 +8,7 @@
 
 #include "BNstring.hpp"
 #include <vector>
+#include "string"
 /*
  编写一个函数，其作用是将输入的字符串反转过来。输入字符串以字符数组 char[] 的形式给出。
  
@@ -50,3 +51,5 @@ void reverseString1(vector<char>& s) {
         s[size - i - 1] = temp;
     }
 }
+
+
