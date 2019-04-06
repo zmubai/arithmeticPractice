@@ -10,5 +10,9 @@
 #define BNOther_hpp
 
 #include <stdio.h>
-
+using namespace std;
+class BNOther {
+public:
+    
+};
 #endif /* BNOther_hpp */
