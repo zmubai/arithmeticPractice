@@ -8,7 +8,7 @@
 
 #ifndef linkedList_hpp
 #define linkedList_hpp
-
+using namespace std;
 #include <stdio.h>
 struct ListNode {
     int val;

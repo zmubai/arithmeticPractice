@@ -7,6 +7,7 @@
 //
 
 #include "linkedList.hpp"
+#include <vector>
 /*
  21. 合并两个有序链表
  将两个有序链表合并为一个新的有序链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。
@@ -15,7 +16,7 @@
  
  输入：1->2->4, 1->3->4
  输出：1->1->2->3->4->4
-
+ 
  */
 
 /**
@@ -87,7 +88,7 @@ ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
 /*
  237. 删除链表中的节点
  请编写一个函数，使其可以删除某个链表中给定的（非末尾）节点，你将只被给定要求被删除的节点。
-
+ 
  现有一个链表 -- head = [4,5,1,9]，它可以表示为:
  示例 1:
  
@@ -128,5 +129,104 @@ void deleteNode(ListNode* node) {
     {
         node->val = node->next->val;
         node->next = node->next->next;
+    }
+}
+
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+
+bool findNode(TreeNode* root, TreeNode* x,vector<TreeNode*>& v)
+{
+    if (root == x) {
+        v.push_back(root);
+//        cout<<root->val<<"";
+        return true;
+    }
+    else if (root != NULL)
+    {
+        
+        if (root ->left != NULL && findNode(root ->left, x, v) == true) {
+            v.push_back(root ->left);
+//            cout<<root->left->val<<"";
+            return true;
+        }
+        else if(root ->right != NULL && findNode(root ->right, x, v))
+        {
+            v.push_back(root ->right);
+//            cout<<root->right->val<<"";
+            return true;
+        }
+    }
+    return false;
+}
+
+/*用两个向量容器记录查找的路径，通过路径找到最后一个相同元素，即为最近公共父节点*/
+///任何的二叉树找最近公共父节点都可以
+TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+    vector<TreeNode*> vp;
+    vector<TreeNode*> vq;
+    bool a = findNode(root, p, vp);
+//    cout << "#"<<"";
+    bool b =  findNode(root, q, vq);
+    if(root != p)
+    {
+        vp.push_back(root);
+    }
+    if(root != q)
+    {
+        vq.push_back(root);
+    }
+    if (a && b) {
+        long i = vp.size();
+        long j = vq.size();
+        while (i >=0 && j >=0) {
+            if(vp[i] != vq[j])
+            {
+                return vp[i + 1];
+            }
+            else if(i == 0)
+            {
+                return vp[i];
+            }
+            else if (j == 0)
+            {
+                return vq[j];
+            }
+            i --;
+            j --;
+        }
+        
+        return NULL;
+    }
+    else
+    {
+        return NULL;
+    }
+    // return NULL;
+}
+
+///利用二叉搜索树的d特点
+TreeNode* lowestCommonAncestorx(TreeNode* root, TreeNode* p, TreeNode* q) {
+    if(root == NULL)return NULL;
+    ///考虑相等的情况
+    if ((root->val <= p->val && root->val >= q->val)||
+        (root->val >= p->val && root->val <= q->val))
+    {
+        return root;
+    }
+    else if (root->val < p->val && root->val < q->val ) {
+        return  lowestCommonAncestor(root->right, p, q);
+    }
+    else if (root->val > p->val && root->val > q->val )
+    {
+        return  lowestCommonAncestor(root->left, p, q);
+    }
+    else
+    {
+        return NULL;
     }
 }

@@ -68,56 +68,6 @@ bool containsDuplicate(vector<int>& nums) {
  输入: nums = [1,5,9,1,5,9], k = 2, t = 3
  输出: false
  */
-bool containsNearbyAlmostDuplicatexx(vector<int>& nums, int k, int t) {
-///if k 和 t确定了有限范围，那么可以通过建立键值对去查找。
-    map<long , long >  mapNums;
-    ///k 为下标之差最大值，t为值之差绝对值最大值
-    long a = k;
-    long b = t;
-    for(vector<int>::iterator it = nums.begin();it!=nums.end();it++)
-    {
-        if (a>2*b) {
-            //下标作为索引
-            mapNums.insert(pair<long, long>(it - nums.begin(),*it));
-        }
-        else
-        {
-            //value作为索引
-            mapNums.insert(pair<long, long>(*it,it - nums.begin()));
-        }
-    }
-    for(vector<int>::iterator it = nums.begin();it!=nums.end();it++)
-    {
-        int v0 = *it;
-        if (a>2*b) {
-            ///有严重问题，当k很大 就傻逼了
-            if (a>2*b) {
-                for (long i = it - nums.begin(); i <= it - nums.begin() + a; i ++) {
-                    long v1 = mapNums.find(i)->second;
-                    if (v0 - v1 <= t && v1 - v0 <= t) {
-                        return true;
-                    }
-                }
-            }
-        }
-        else
-        {
-            int index0 = (int)(it - nums.begin());
-            long i;
-            ///有严重问题，当k很大 就傻逼了
-            for (i = v0 - b; i <= v0 + b; i ++) {
-                if (mapNums.find(i)!= mapNums.end()) {
-                    long index1 = mapNums.find(i)->second;
-                    if (index0 - index1 <= k && index1 - index0 <= k && index1 != index0) {
-                        
-                        return true;
-                    }
-                }
-            }
-        }
-    }
-    return false;
-}
 
 //1 5 1 5 9 k = 2  t = 3 //使用有序集合set
 bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t) {
@@ -210,5 +160,48 @@ void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
         }
     }
 }
+
+
+/*
+  169. 求众数
+ 给定一个大小为 n 的数组，找到其中的众数。众数是指在数组中出现次数大于 ⌊ n/2 ⌋ 的元素。
+ 
+ 你可以假设数组是非空的，并且给定的数组总是存在众数。
+ 
+ 示例 1:
+ 
+ 输入: [3,2,3]
+ 输出: 3
+ 示例 2:
+ 
+ 输入: [2,2,1,1,1,2,2]
+ 输出: 2
+ */
+/*对其进行排序n.如果为偶数，那么有n/2为众数；如果是奇数，那么 n/2也为众数
+ */
+int majorityElement(vector<int>& nums) {
+    sort(nums.begin(), nums.end());
+    return nums[nums.size()/2];
+}
+
+/*解法二*/
+/*
+ 解题思路：众数在数组中出现次数大于 ⌊ n/2 ⌋，所以遇到同样的数+1，不同的数-1
+ 只有两种数，众数和非众数
+ */
+int majorityElementx(vector<int>& nums) {
+    int cur = 0;
+    int count = 0;
+    for(int i = 0; i < nums.size(); i++){
+        if(count == 0)
+            cur = nums[i];
+        if(nums[i] == cur)
+            count++;
+        else
+            count--;
+    }
+    return cur;
+}
+
 
 
