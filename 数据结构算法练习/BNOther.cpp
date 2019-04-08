@@ -63,3 +63,77 @@ int singleNumber(vector<int>& nums) {
     }
     return x;
 }
+
+/*
+ 判断一个整数是否是回文数。回文数是指正序（从左向右）和倒序（从右向左）读都是一样的整数。
+ 
+ 示例 1:
+ 
+ 输入: 121
+ 输出: true
+ 示例 2:
+ 
+ 输入: -121
+ 输出: false
+ 解释: 从左向右读, 为 -121 。 从右向左读, 为 121- 。因此它不是一个回文数。
+ 示例 3:
+ 
+ 输入: 10
+ 输出: false
+ 解释: 从右向左读, 为 01 。因此它不是一个回文数。
+ */
+/*获取每一位放入向量容器中，然后前后指针对比，如果遇到不相等的退出返回false，如果执行到最后则为回文数*/
+bool isPalindrome(int x) {
+    if (x < 0) {
+        return false;
+    }
+    vector<int> v;
+    while (x > 0) {
+        v.push_back(x%10);
+        x /= 10;
+    }
+    int left = 0;
+    int right = (int)v.size() - 1;
+    while (left < right) {
+        if (v[left] != v[right]) {
+            return false;
+        }
+        left++;
+        right--;
+    }
+    return true;
+}
+
+bool isPalindromexx(int x) {
+    ///跟解法一思路上完全一致，其实就是修改了判断的顺序，测试用例的集合少于0的数比较少。如果在实际编码中需要考虑输入的集合的情况来优化条件判断的顺序，这个也能提高程序的执行效率。
+    if (x >= 0) {
+        vector<int> v;
+        while (x) {
+            v.push_back(x%10);
+            x /= 10;
+        }
+        int left = 0;
+        int right = (int)v.size() - 1;
+        while (left < right) {
+            if (v[left] != v[right]) {
+                return false;
+            }
+            ++left;
+            --right;
+        }
+        return true;
+    }
+    return false;
+}
+
+/*别的解法，根据回文数的特点，原数的低位为回文数的高位，这样生成一个回文数，对比原数，如果相等那么原数就是回文数，反之不是*/
+bool isPalindromeX(int x) {
+    long long ans = 0;
+    int temp = x;
+    while(temp > 0) {
+        ans = ans * 10 + temp % 10;
+        temp /= 10;
+    }
+    
+    return (x == ans);
+    }
