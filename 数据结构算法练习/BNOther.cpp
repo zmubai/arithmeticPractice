@@ -26,7 +26,7 @@
  */
 bool canWinNim(int n) {
     return n%4 == 0 ?false:true;
-    }
+}
 
 /*
  136. 只出现一次的数字
@@ -136,4 +136,80 @@ bool isPalindromeX(int x) {
     }
     
     return (x == ans);
+}
+
+/*
+ 231. 2的幂
+ 给定一个整数，编写一个函数来判断它是否是 2 的幂次方。
+ 
+ 示例 1:
+ 
+ 输入: 1
+ 输出: true
+ 解释: 20 = 1
+ 示例 2:
+ 
+ 输入: 16
+ 输出: true
+ 解释: 24 = 16
+ 示例 3:
+ 
+ 输入: 218
+ 输出: false
+ */
+bool isPowerOfTwo(int n) {
+    if(n == 1) return true;
+    int g = 2;
+    bool flag = false;
+    while(1)
+    {
+        // int pre = n ;
+        while(n % g !=0 && g > 2)
+        {
+            //标记过高，并查找合适的g
+            flag = true;
+            g /= 2;
+        }
+        if(g  == 1 || n % 2 != 0)
+        {
+            return false;
+        }
+        else
+        {
+            if(n == g ) return true;
+            n /= g;
+        }
+        //判断结果
+        if(n == 2)
+        {
+            return true;
+        }
+        else if(n%2 != 0)
+        {
+            return false;
+        }
+        else if (n == 0)
+        {
+            return false;
+        }
+        ///先指数增长，如果过高标记后平缓增长
+        g *= flag?2:g;
+        
     }
+    return true;
+}
+
+/*高端解法
+ 负数不是
+ 如果为2的幂，那么 n 与 n-1 的二进制与运算结果为0 如果 2【00000010】 1【000000001】
+ */
+bool isPowerOfTwox(int n) {
+    return n && ((n&(n-1)) == 0);
+    /*
+     leetcode 编译器问题,n 为大负数的时候越界，正常来说 n 少于0不会执行&&后的条件判断的
+     if(n <=0) return false;
+     return ((n&(n-1)) == 0);
+     */
+}
+
+
