@@ -212,4 +212,20 @@ bool isPowerOfTwox(int n) {
      */
 }
 
+//class BNOther {
+//
+//}
+
+//void pop() {
+//    
+//}
+//
+//int top() {
+//    
+//}
+//
+//int getMin() {
+//    
+//}
+
 
