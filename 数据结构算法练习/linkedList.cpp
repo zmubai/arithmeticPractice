@@ -230,3 +230,65 @@ TreeNode* lowestCommonAncestorx(TreeNode* root, TreeNode* p, TreeNode* q) {
         return NULL;
     }
 }
+
+/*
+ 160. 相交链表
+ 编写一个程序，找到两个单链表相交的起始节点。
+ 注意：
+ 
+ 如果两个链表没有交点，返回 null.
+ 在返回结果后，两个链表仍须保持原有的结构。
+ 可假定整个链表结构中没有循环。
+ 程序尽量满足 O(n) 时间复杂度，且仅用 O(1) 内存。[被这里m迷惑了]
+ */
+/*
+ 
+ */
+ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+    int aSize = 0;
+    int bSize = 0;
+    ListNode *tA = headA;
+    ListNode *tB = headB;
+    while (tA != NULL) {
+        ++ aSize;
+        tA = tA->next;
+    }
+    while (tB != NULL) {
+        ++ bSize;
+        tB = tB->next;
+    }
+    
+    int skip;
+    if(aSize > bSize)
+    {
+        skip = aSize - bSize;
+        aSize = bSize;
+        while (skip > 0) {
+            -- skip;
+            if(headA == NULL) return NULL;
+            headA = headA->next;
+        }
+    }
+    else
+    {
+        skip = bSize - aSize;
+        bSize = aSize;
+        while (skip > 0) {
+            -- skip;
+            if(headB == NULL) return NULL;
+            headB = headB->next;
+        }
+    }
+    while (headB != NULL && headA !=NULL ) {
+        if(headB != headA)
+        {
+            headB = headB ->next;
+            headA = headA ->next;
+        }
+        else
+        {
+            return headB;
+        }
+    }
+    return NULL;
+};
