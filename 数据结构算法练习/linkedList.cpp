@@ -8,6 +8,7 @@
 
 #include "linkedList.hpp"
 #include <vector>
+#include <map>
 /*
  21. 合并两个有序链表
  将两个有序链表合并为一个新的有序链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。
@@ -292,3 +293,43 @@ ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
     }
     return NULL;
 };
+
+
+bool hasCycle(ListNode *head) {
+    //1.如果要求常量的内存，那么用Map标记下，就能判断出，是否有环
+    map<ListNode* ,int> history;
+    while (head != NULL) {
+        if (history.find(head) != history.end())
+        {
+            return true;
+        }
+        history.insert(pair<ListNode* ,int>(head,1));
+    }
+    return false;
+}
+
+bool hasCyclex(ListNode *head) {
+    //2.如果需要常量的内存，那么可以使用快慢跑这，我开始想的时候，也是一个快一个慢，但就是想一次遍历就能找出结果，抓住这个不放，以致于放下这个思路去实现，方法1。
+    //一个走两步，一个走一步。
+    if (head == NULL) {
+        return false;
+    }
+    ListNode *headLow = head;
+    ListNode *headFast = head ->next;
+    
+    while (headFast != NULL) {
+        if(headFast == headLow)
+        {
+            return true;
+        }
+        else
+        {
+            headFast = headFast->next;
+            if(headFast == NULL) return false;
+            headFast = headFast->next;
+            headLow = headLow->next;
+        }
+    }
+    return false;
+}
+
