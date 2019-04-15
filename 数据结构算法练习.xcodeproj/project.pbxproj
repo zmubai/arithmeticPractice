@@ -93,10 +93,17 @@
 				DB3A534D222D5F6300146A52 /* main.m */,
 				DB68D4552256520F005EE8DA /* BNTest.h */,
 				DB68D4562256520F005EE8DA /* BNTest.mm */,
+				DB6224122264BDB40029FE30 /* c */,
+				DB6224132264BDBA0029FE30 /* c++ */,
+			);
+			path = "数据结构算法练习";
+			sourceTree = "<group>";
+		};
+		DB6224122264BDB40029FE30 /* c */ = {
+			isa = PBXGroup;
+			children = (
 				DB3A5357222D89F500146A52 /* BNArray.h */,
 				DB3A5358222D89F500146A52 /* BNArray.c */,
-				DB6413C522491B7E0008483B /* BNNArray.cpp */,
-				DB6413C622491B7E0008483B /* BNNArray.hpp */,
 				DB59B1A922300A64009C60EB /* BNSort.h */,
 				DB59B1AA22300A64009C60EB /* BNSort.c */,
 				DBA57DC42237FE4300ED878C /* BNDyPlan.h */,
@@ -105,16 +112,25 @@
 				DBA57DC9223820B700ED878C /* BNBinaryTree.c */,
 				DB577E0E22413A8E00B76579 /* BNDynamicPlanning.h */,
 				DB577E0F22413A8E00B76579 /* BNDynamicPlanning.c */,
+				DB68D458225653EB005EE8DA /* BNCString.h */,
+				DB68D459225653EB005EE8DA /* BNCString.c */,
+			);
+			path = c;
+			sourceTree = "<group>";
+		};
+		DB6224132264BDBA0029FE30 /* c++ */ = {
+			isa = PBXGroup;
+			children = (
+				DB6413C522491B7E0008483B /* BNNArray.cpp */,
+				DB6413C622491B7E0008483B /* BNNArray.hpp */,
 				DB6413C92253C4CE0008483B /* linkedList.hpp */,
 				DB6413C82253C4CE0008483B /* linkedList.cpp */,
 				DB68D45222564DCF005EE8DA /* BNstring.cpp */,
 				DB68D45322564DCF005EE8DA /* BNstring.hpp */,
-				DB68D458225653EB005EE8DA /* BNCString.h */,
-				DB68D459225653EB005EE8DA /* BNCString.c */,
 				DB5F269F22586F2100DF7EB4 /* BNOther.cpp */,
 				DB5F26A022586F2100DF7EB4 /* BNOther.hpp */,
 			);
-			path = "数据结构算法练习";
+			path = "c++";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
