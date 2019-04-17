@@ -258,3 +258,40 @@ int removeDuplicates(vector<int>& nums) {
     return int(size);
 }
 
+/*
+ 78. 子集
+ 给定一组不含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。
+ 
+ 说明：解集不能包含重复的子集。
+ 
+ 示例:
+ 输入: nums = [1,2,3]
+ 输出: [] 1  2 12  3 13 23 123  4 14 24 124 34 134 234 1234
+ [
+ [3],
+ [1],
+ [2],
+ [1,2,3],
+ [1,3],
+ [2,3],
+ [1,2],
+ []
+ ]
+ */
+/* 另有回溯法，深度优先搜索等，需要学习思路，练习算法，明白算法的精妙之处*/
+vector<vector<int>> subsets(vector<int>& nums) {
+    vector<vector<int>> group;
+    vector<int> g0;
+    group.push_back(g0);
+    
+    for (int i= 0 ; i < nums.size(); i ++) {
+        long size = group.size();
+        for (long j = 0 ; j < size; j ++) {
+            vector<int>g;
+            g.assign(group[j].begin(), group[j].end());
+            g.push_back(nums[i]);
+            group.push_back(g);
+        }
+    }
+    return group;
+    }
