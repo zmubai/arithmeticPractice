@@ -145,3 +145,115 @@ string longestCommonPrefix(vector<string>& strs) {
     }
     return x;
 }
+
+/*竞赛题*/
+string reverseOnlyLetters(string S) {
+    long  left = 0;
+    long  right = S.size() - 1;
+    while (left < right) {
+        while (left < right) {
+            if((S[left] >= 'A' && S[left] <= 'Z')
+               ||(S[left] >= 'a' && S[left] <= 'z'))
+            {
+                break;
+            }
+            left ++;
+        }
+        if (left >= right) {
+            break;
+        }
+        while (left < right) {
+            if((S[right] >= 'A' && S[right] <= 'Z')
+               ||(S[right] >= 'a' && S[right] <= 'z'))
+            {
+                break;
+            }
+            right --;
+        }
+        if (left >= right) {
+            break;
+        }
+        char temp = S[left];
+        S[left] = S[right];
+        S[right] = temp;
+        left ++;
+        right --;
+    }
+    return S;
+}
+
+/* 解法1 超出时间限制*/
+int maxSubarraySumCircular(vector<int>& A) {
+    long size = A.size();
+    if(size == 0) return 0;
+    if(size == 1) return A[0];
+    for (int i = 0; i < 2; i ++) {
+        for (int i = 0 ; i < size; i ++) {
+            A.push_back(A[i]);
+        }
+    }
+    int max = 0;
+    //123 123 123
+    for (long i = size ; i <= size + size - 1; i ++) {
+        //左右扩展1 -n 长度
+        if(max < A[i]) max = A[i];
+        for (long j = i - 1 ; j > i - size; j --) {
+            int temp = A[i];
+            if(A[j]<=0) continue;
+            for (long k = i - 1; k >= j; k --) {
+                temp += A[k];
+            }
+            if(max < temp) max = temp;
+        }
+        
+        for (long j = i + 1 ; j < i + size; j ++) {
+            int temp = A[i];
+            if(A[j]<=0) continue;
+            for (long k = i + 1; k <= j; k ++) {
+                temp += A[k];
+            }
+            if(max < temp) max = temp;
+        }
+    }
+    return max;
+}
+
+int maxWitSubArr(vector<int>& A,int left,int right)
+{
+    int a = A[left];
+    int max = a;
+    for (int i = left + 1; i <= right; i ++) {
+        if(a + A[i] < A[i])
+        {
+            a = A[i];
+        }
+        else
+        {
+            a = a + A[i];
+        }
+        if(a > max) max = a;
+    }
+    return max;
+}
+
+/*
+ 竞赛题 过了97/107个案例，超时，有待优化
+ */
+int maxSubarraySumCircularB(vector<int>& A) {
+    long size = A.size();
+    if(size == 0) return 0;
+    if(size == 1) return A[0];
+    for (int i = 0; i < 2; i ++) {
+        for (int i = 0 ; i < size; i ++) {
+            A.push_back(A[i]);
+        }
+    }
+    int max = INT_MIN;
+    for (int i = 1; i < size + size - 1; i++) {
+        int temp = maxWitSubArr(A,i,i + size - 1);
+        if(temp > max) max = temp;
+    }
+    return max;
+}
+
+

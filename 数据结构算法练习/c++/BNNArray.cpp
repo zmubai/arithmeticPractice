@@ -295,3 +295,97 @@ vector<vector<int>> subsets(vector<int>& nums) {
     }
     return group;
     }
+
+
+/*
+ 59. 螺旋矩阵 II
+ 给定一个正整数 n，生成一个包含 1 到 n2 所有元素，且元素按顺时针顺序螺旋排列的正方形矩阵。
+ 
+ 示例:
+ 
+ 输入: 3
+ 输出:
+ [
+ [ 1, 2, 3 ],
+ [ 8, 9, 4 ],
+ [ 7, 6, 5 ]
+ ]
+ 
+模拟过程的处理方式，细节问题很多，很难一次写好
+ */
+vector<vector<int>> generateMatrix(int n) {
+    long sum = n * n;
+    vector<vector<int>> qv;
+    for (int i = 0 ; i < n ; i ++) {
+        vector<int> a;
+        for (int j = 0 ; j < n; j ++) {
+            a.push_back(-1);
+        }
+        qv.push_back(a);
+    }
+    
+    bool isHModel = true;
+    bool isLeftDown = true;
+    int currentX = 0;
+    int currentY = 0;
+    for (int i = 1; i <= sum; i ++) {
+        if (isHModel) {
+            if (isLeftDown) {
+                if(currentX < n && qv[currentY][currentX] == -1)
+                {
+                    qv[currentY][currentX ++] = i;
+                }
+                else
+                {
+                    isHModel = false;
+                    qv[++currentY][--currentX] = i;
+                    currentY ++;
+                }
+            }
+            else
+            {
+                if(currentX >= 0 && qv[currentY][currentX] == -1)
+                {
+                    qv[currentY][currentX --] = i;
+                }
+                else
+                {
+                    isHModel = false;
+                    qv[--currentY][++currentX] = i;
+                    currentY --;
+                }
+            }
+        }
+        else
+        {
+            if (isLeftDown) {
+                if(currentY < n && qv[currentY][currentX] == -1)
+                {
+                    qv[currentY++][currentX] = i;
+                }
+                else
+                {
+                    isHModel = true;
+                    isLeftDown = false;
+                    qv[--currentY][--currentX] = i;
+                    currentX --;
+                }
+            }
+            else
+            {
+                if(currentY >= 0 && qv[currentY][currentX] == -1)
+                {
+                    qv[currentY--][currentX] = i;
+                }
+                else
+                {
+                    isHModel = true;
+                    isLeftDown = true;
+                    qv[++currentY][++currentX] = i;
+                    currentX ++;
+                }
+            }
+        }
+    }
+    return qv;
+}
