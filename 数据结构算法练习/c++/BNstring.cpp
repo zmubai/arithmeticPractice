@@ -256,4 +256,40 @@ int maxSubarraySumCircularB(vector<int>& A) {
     return max;
 }
 
+/*
+ 918. 环形子数组的最大和
+ 动态规划:1.不跨越边界简单的最大连续和。2.跨越边界，再记录一个最小值。当最大值少于0可以直接返回，否则，获取数组之和减去最小值的差，与最大值对比，取较大的值。第二种情况中，要考虑最大值少于0直接返回（细节，如果少于0 ，返回的就是最大和），另外最大值大于等于0 的情况下，需要用数组和减去最小值获取跨越边界的最大值（关键）
+ */
+int max (int a , int b )
+{
+    return a>b?a:b;
+}
+int min(int a,int b )
+{
+    return a>b?b:a;
+}
+int maxSubarraySumCircularC(vector<int>& A) {
+    if(A.size() == 0) return 0;
+    vector<int> maxV;
+    vector<int> minV;
+    maxV.push_back(A[0]);
+    minV.push_back(A[0]);
+    long size = A.size();
+    int maxT =  maxV[0];
+    int minT = minV[0];
+    int sum = A[0];
+    for (int i = 1; i < size; i ++) {
+        sum += A[i];
+        int a =  max(maxV[i-1]+A[i],A[i]);
+        maxV.push_back(a);
+        if(a > maxT) maxT = a;
+        int b = min(minV[i-1]+A[i],A[i]);
+        minV.push_back(b);
+        if(b < minT) minT = b;
+    }
+    if(maxT<0) return maxT;
+    return max(maxT,sum - minT);
+}
+
+
 
