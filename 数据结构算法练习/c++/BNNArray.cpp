@@ -389,3 +389,44 @@ vector<vector<int>> generateMatrix(int n) {
     }
     return qv;
 }
+
+/*
+ 46. 全排列
+ 给定一个没有重复数字的序列，返回其所有可能的全排列。
+ 输入: [1,2,3]
+ 输出:
+ [
+ [1,2,3],
+ [1,3,2],
+ [2,1,3],
+ [2,3,1],
+ [3,1,2],
+ [3,2,1]
+ ]
+ 
+https://blog.csdn.net/happyaaaaaaaaaaa/article/details/51534048
+https://www.cnblogs.com/grandyang/p/4358848.html
+ //回溯法，递归法，插入法等。
+ */
+void perMuteDFS(vector<vector<int>> gv ,int start, vector<int>& nums)
+{
+    if(start > nums.size() - 1)
+    {
+        gv.push_back(nums);
+    }
+    for (int i = start; i < nums.size(); i ++) {
+        //交换位置
+        swap(nums[start], nums[i]);
+        perMuteDFS(gv, start + 1, nums);
+        //恢复位置（由上而下的交换，右下而上的恢复）
+        swap(nums[start], nums[i]);
+    }
+}
+
+vector<vector<int>> permute(vector<int>& nums) {
+    vector<vector<int>> gv;
+    perMuteDFS(gv, 0, nums);
+    return gv;
+}
+
+
