@@ -48,8 +48,8 @@ bool containsDuplicate(vector<int>& nums) {
             mapNums.insert(pair<int, int>(x,x));
         }
     }
-        return false;
-    }
+    return false;
+}
 
 /*
  220. 存在重复元素 III
@@ -97,7 +97,7 @@ bool containsNearbyDuplicate(vector<int>& nums, int k) {
     long kk = k ;
     ///->向右遍历
     for (int i = 0 ; i < nums.size(); i ++) {
-    /// 0 1 2 擦除最左边的
+        /// 0 1 2 擦除最左边的
         if(i>k) window.erase(nums[i - kk - 1]);
         ///<-向左查找最近的数匹配
         set<long>::iterator it = window.lower_bound(nums[i]);
@@ -163,7 +163,7 @@ void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
 
 
 /*
-  169. 求众数
+ 169. 求众数
  给定一个大小为 n 的数组，找到其中的众数。众数是指在数组中出现次数大于 ⌊ n/2 ⌋ 的元素。
  
  你可以假设数组是非空的，并且给定的数组总是存在众数。
@@ -294,7 +294,7 @@ vector<vector<int>> subsets(vector<int>& nums) {
         }
     }
     return group;
-    }
+}
 
 
 /*
@@ -311,7 +311,7 @@ vector<vector<int>> subsets(vector<int>& nums) {
  [ 7, 6, 5 ]
  ]
  
-模拟过程的处理方式，细节问题很多，很难一次写好
+ 模拟过程的处理方式，细节问题很多，很难一次写好
  */
 vector<vector<int>> generateMatrix(int n) {
     long sum = n * n;
@@ -404,8 +404,8 @@ vector<vector<int>> generateMatrix(int n) {
  [3,2,1]
  ]
  
-https://blog.csdn.net/happyaaaaaaaaaaa/article/details/51534048
-https://www.cnblogs.com/grandyang/p/4358848.html
+ https://blog.csdn.net/happyaaaaaaaaaaa/article/details/51534048
+ https://www.cnblogs.com/grandyang/p/4358848.html
  //回溯法，递归法，插入法等。
  */
 void perMuteDFS(vector<vector<int>> gv ,int start, vector<int>& nums)
@@ -429,4 +429,52 @@ vector<vector<int>> permute(vector<int>& nums) {
     return gv;
 }
 
-
+/*
+ 89. 格雷编码
+ 格雷编码是一个二进制数字系统，在该系统中，两个连续的数值仅有一个位数的差异。
+ 
+ 给定一个代表编码总位数的非负整数 n，打印其格雷编码序列。格雷编码序列必须以 0 开头。
+ 
+ 示例 1:
+ 
+ 输入: 2
+ 输出: [0,1,3,2]
+ 解释:
+ 00 - 0
+ 01 - 1
+ 11 - 3
+ 10 - 2
+ 
+ 对于给定的 n，其格雷编码序列并不唯一。
+ 例如，[0,2,3,1] 也是一个有效的格雷编码序列。
+ 
+ 00 - 0
+ 10 - 2
+ 11 - 3
+ 01 - 1
+ 示例 2:
+ 
+ 输入: 0
+ 输出: [0]
+ 解释: 我们定义格雷编码序列必须以 0 开头。
+ 给定编码总位数为 n 的格雷编码序列，其长度为 2n。当 n = 0 时，长度为 20 = 1。
+ 因此，当 n = 0 时，其格雷编码序列为 [0]。
+ */
+/*
+ 题目有点难，
+ 分析规律,n+1是n的集合的镜像元素高位高位补一再添加到集合中，重复操作知道循环结束。
+ https://www.cnblogs.com/ariel-dreamland/p/9159482.html
+ */
+vector<int> grayCode(int n) {
+    //初始值，添加基础元素
+    vector<int> group(0);
+    group.push_back(0);
+    for (int i = 0; i < n ; i ++) {
+        long size = group.size();
+        for (long j = size - 1; j >= 0; j --) {
+            //(1 << i)  1 左移 i 位； | 相与
+            group.push_back(group[j] | (1 << i));
+        }
+    }
+    return group;
+}
