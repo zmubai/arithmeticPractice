@@ -144,7 +144,7 @@ bool findNode(TreeNode* root, TreeNode* x,vector<TreeNode*>& v)
 {
     if (root == x) {
         v.push_back(root);
-//        cout<<root->val<<"";
+        //        cout<<root->val<<"";
         return true;
     }
     else if (root != NULL)
@@ -152,13 +152,13 @@ bool findNode(TreeNode* root, TreeNode* x,vector<TreeNode*>& v)
         
         if (root ->left != NULL && findNode(root ->left, x, v) == true) {
             v.push_back(root ->left);
-//            cout<<root->left->val<<"";
+            //            cout<<root->left->val<<"";
             return true;
         }
         else if(root ->right != NULL && findNode(root ->right, x, v))
         {
             v.push_back(root ->right);
-//            cout<<root->right->val<<"";
+            //            cout<<root->right->val<<"";
             return true;
         }
     }
@@ -171,7 +171,7 @@ TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
     vector<TreeNode*> vp;
     vector<TreeNode*> vq;
     bool a = findNode(root, p, vp);
-//    cout << "#"<<"";
+    //    cout << "#"<<"";
     bool b =  findNode(root, q, vq);
     if(root != p)
     {
@@ -333,3 +333,86 @@ bool hasCyclex(ListNode *head) {
     return false;
 }
 
+/*
+ 给定一个二叉搜索树，编写一个函数 kthSmallest 来查找其中第 k 个最小的元素。
+ 
+ 说明：
+ 你可以假设 k 总是有效的，1 ≤ k ≤ 二叉搜索树元素个数。
+ 
+ 示例 1:
+ 
+ 输入: root = [3,1,4,null,2], k = 1
+ 3
+ / \
+ 1   4
+ \
+ 2
+ 输出: 1
+ 示例 2:
+ 
+ 输入: root = [5,3,6,2,4,null,null,1], k = 3
+ 5
+ / \
+ 3   6
+ / \
+ 2   4
+ /
+ 1
+ 输出: 3
+ 进阶：
+ 如果二叉搜索树经常被修改（插入/删除操作）并且你需要频繁地查找第 k 小的值，你将如何优化 kthSmallest 函数？
+ */
+void subKthSmallest(TreeNode *root, int &r, int &k)
+{
+    if(root == NULL || k == 0)
+    {
+        return;
+    }
+    subKthSmallest(root->left, r, k);
+//    mins.push_back(root->val);
+    k--;
+    if(k == 0)
+    {
+        r = root->val;
+        return;
+    }
+    subKthSmallest(root->right, r, k);
+}
+
+int kthSmallest(TreeNode* root, int k) {
+    int r = 0;
+    int sum = k;
+    subKthSmallest(root, r, sum);
+    return r;
+}
+
+/*首先想到的方法，使用了额外的空间去存储元素*/
+void subKthSmallest1(TreeNode *root, vector<int> &mins, int k)
+{
+    if(root == NULL || mins.size() == k)
+    {
+        return;
+    }
+    subKthSmallest1(root->left, mins, k);
+    if(mins.size() == k)
+    {
+        return;
+    }
+    mins.push_back(root->val);
+    if(mins.size() == k)
+    {
+        return;
+    }
+    subKthSmallest1(root->right, mins, k);
+    if(mins.size() == k)
+    {
+        return;
+    }
+}
+
+int kthSmallest1(TreeNode* root, int k) {
+    vector<int> mins;
+    subKthSmallest1(root, mins, k);
+    // cout<<mins.size()<<"";
+    return mins[k-1];
+}
