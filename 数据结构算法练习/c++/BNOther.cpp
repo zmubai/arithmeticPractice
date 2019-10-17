@@ -8,6 +8,7 @@
 
 #include "BNOther.hpp"
 #include "vector"
+#include "map"
 /*
  292. Nim游戏
  你和你的朋友，两个人一起玩 Nim游戏：桌子上有一堆石头，每次你们轮流拿掉 1 - 3 块石头。 拿掉最后一块石头的人就是获胜者。你作为先手。
@@ -228,4 +229,82 @@ bool isPowerOfTwox(int n) {
 //    
 //}
 
+/*
+ 436. 寻找右区间
+ 
+ */
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+static bool cmp0(pair<int, int> a , pair<int, int> b){
+    return a.first < b.first;
+}
+static bool cmp1(pair<int, int> a , int b ){
+    ///< 代表没有比较继续  返回true
+    /// >= 表示比较结束 返回false
+    return a.first < b;
+}
+vector<int> findRightInterval(vector<vector<int>>& intervals) {
+    int n = intervals.size();
+    vector<pair<int, int>> pairs(n);
+    vector <int> res(n,-1);
+    for (int i = 0; i < n; i ++) {
+        int left = intervals[i][0];
+        pairs[i] = make_pair(left,i);
+    }
+    sort(pairs.begin(), pairs.end(), cmp0);
+    for (int i = 0; i < n; i ++) {
+        int right = intervals[i][1];
+        ///获取第一个大于等于right的
+        /*
+         auto可以在声明变量的时候根据变量初始值的类型自动为此变量选择匹配的类型，类似的关键字还有decltype
+         自动匹配类型
+         */
+       auto it = lower_bound(pairs.begin(), pairs.end(), right, cmp1);
+        if (it != pairs.end()) {
+            ///(*it)获取迭代器当前的值，second 当前值的第二个元素
+            res[i] = (*it).second;
+        }
+    }
+    return res;
+}
 
+/*
+ 454. 四数相加 II
+ 给定四个包含整数的数组列表 A , B , C , D ,计算有多少个元组 (i, j, k, l) ，使得 A[i] + B[j] + C[k] + D[l] = 0。
+ 
+ 为了使问题简单化，所有的 A, B, C, D 具有相同的长度 N，且 0 ≤ N ≤ 500 。所有整数的范围在 -228 到 228 - 1 之间，最终结果不会超过 231 - 1 。
+ 
+ 来源：力扣（LeetCode）
+ 链接：https://leetcode-cn.com/problems/4sum-ii
+ 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+ */
+
+int fourSumCount(vector<int>& A, vector<int>& B, vector<int>& C, vector<int>& D) {
+    map<long, long> mmap;
+    int res = 0;
+    ///如果是0 的长度 会怎么办。 因为是具有相同的长度，所以如果是0的化，直接返回是0.
+    for (int i = 0 ; i < A.size(); i ++) {
+        for (int j = 0; j < B.size(); j ++) {
+            int v = A[i] + B[j];
+            auto it = mmap.find(v);
+            if (it != mmap.end()) {
+                mmap[v] += 1;
+            }
+            else{
+                mmap[v] = 1;
+            }
+        }
+    }
+    
+    for (int i = 0 ; i < C.size(); i ++) {
+        for (int j = 0; j < D.size(); j ++) {
+            auto it = mmap.find(-(C[i] + D[j]));
+            if(it != mmap.end()){
+                ///first 取的是key, second 取的是value
+                res += (*it).second;
+            }
+        }
+    }
+    return res;
+}
