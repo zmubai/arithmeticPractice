@@ -308,3 +308,63 @@ int fourSumCount(vector<int>& A, vector<int>& B, vector<int>& C, vector<int>& D)
     }
     return res;
 }
+
+/*
+ 请你帮忙设计一个程序，用来找出第 n 个丑数。
+
+ 丑数是可以被 a 或 b 或 c 整除的 正整数。
+
+  
+
+ 示例 1：
+
+ 输入：n = 3, a = 2, b = 3, c = 5
+ 输出：4
+ 解释：丑数序列为 2, 3, 4, 5, 6, 8, 9, 10... 其中第 3 个是 4。
+ 示例 2：
+
+ 输入：n = 4, a = 2, b = 3, c = 4
+ 输出：6
+ 解释：丑数序列为 2, 3, 4, 6, 8, 9, 12... 其中第 4 个是 6。
+
+ 来源：力扣（LeetCode）
+ 链接：https://leetcode-cn.com/problems/ugly-number-iii
+ 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+ **/
+
+
+/*
+ 658. 找到 K 个最接近的元素
+ 给定一个排序好的数组，两个整数 k 和 x，从数组中找到最靠近 x（两数之差最小）的 k 个数。返回的结果必须要是按升序排好的。如果有两个数与 x 的差值一样，优先选择数值较小的那个数。
+
+ 示例 1:
+
+ 输入: [1,2,3,4,5], k=4, x=3
+ 输出: [1,2,3,4]
+
+ 来源：力扣（LeetCode）
+ 链接：https://leetcode-cn.com/problems/find-k-closest-elements
+ 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+ */
+
+vector<int> findClosestElements(vector<int>& arr, int k, int x) {
+    vector<int> res(k,0);
+    int len = arr.size();
+    int left = 0;
+    int right = len - 1;
+    while(len > k){
+        if(abs(arr[left] - x) > abs(arr[right] - x)){
+            left ++;
+        }
+        else{
+            right --;
+        }
+        len --;
+    }
+    ///新数值index从0开始
+    int index = 0;
+    for(int i = left; i <= right; i ++){
+        res[index++] = arr[i];
+    }
+    return res;
+}
