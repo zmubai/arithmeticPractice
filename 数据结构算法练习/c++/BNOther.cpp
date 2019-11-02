@@ -347,23 +347,50 @@ int fourSumCount(vector<int>& A, vector<int>& B, vector<int>& C, vector<int>& D)
  著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
 
-vector<int> findClosestElements(vector<int>& arr, int k, int x) {
+//func1
+//vector<int> findClosestElements(vector<int>& arr, int k, int x) {
+//    vector<int> res(k,0);
+//    int len = arr.size();
+//    int left = 0;
+//    int right = len - 1;
+//    while(len > k){
+//        if(abs(arr[left] - x) > abs(arr[right] - x)){
+//            left ++;
+//        }
+//        else{
+//            right --;
+//        }
+//        len --;
+//    }
+//    ///新数值index从0开始
+//    int index = 0;
+//    for(int i = left; i <= right; i ++){
+//        res[index++] = arr[i];
+//    }
+//    return res;
+//}
+
+//func2
+/*
+ 使用二分法，查找子数组合适的起点。二分逼近
+ */
+ vector<int> findClosestElements(vector<int>& arr, int k, int x) {
     vector<int> res(k,0);
-    int len = arr.size();
-    int left = 0;
-    int right = len - 1;
-    while(len > k){
-        if(abs(arr[left] - x) > abs(arr[right] - x)){
-            left ++;
+    int start = 0;
+     //end的初始值，设定二分开始区间为(0,size -k),所以下面用到mid + k 是不会越界的;
+    int end = arr.size() - k;
+    int mid;
+    while (start < end) {
+        mid = start + (end - start)/2;
+        if(abs(arr[mid] - x) > abs(arr[mid + k] - x)){
+            start = mid + 1;
         }
         else{
-            right --;
+            end = mid;
         }
-        len --;
     }
-    ///新数值index从0开始
     int index = 0;
-    for(int i = left; i <= right; i ++){
+    for (int i = start; i < start + k; i ++) {
         res[index++] = arr[i];
     }
     return res;
