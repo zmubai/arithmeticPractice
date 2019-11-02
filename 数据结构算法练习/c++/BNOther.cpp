@@ -260,7 +260,7 @@ vector<int> findRightInterval(vector<vector<int>>& intervals) {
          auto可以在声明变量的时候根据变量初始值的类型自动为此变量选择匹配的类型，类似的关键字还有decltype
          自动匹配类型
          */
-       auto it = lower_bound(pairs.begin(), pairs.end(), right, cmp1);
+        auto it = lower_bound(pairs.begin(), pairs.end(), right, cmp1);
         if (it != pairs.end()) {
             ///(*it)获取迭代器当前的值，second 当前值的第二个元素
             res[i] = (*it).second;
@@ -311,22 +311,22 @@ int fourSumCount(vector<int>& A, vector<int>& B, vector<int>& C, vector<int>& D)
 
 /*
  请你帮忙设计一个程序，用来找出第 n 个丑数。
-
+ 
  丑数是可以被 a 或 b 或 c 整除的 正整数。
-
+ 
   
-
+ 
  示例 1：
-
+ 
  输入：n = 3, a = 2, b = 3, c = 5
  输出：4
  解释：丑数序列为 2, 3, 4, 5, 6, 8, 9, 10... 其中第 3 个是 4。
  示例 2：
-
+ 
  输入：n = 4, a = 2, b = 3, c = 4
  输出：6
  解释：丑数序列为 2, 3, 4, 6, 8, 9, 12... 其中第 4 个是 6。
-
+ 
  来源：力扣（LeetCode）
  链接：https://leetcode-cn.com/problems/ugly-number-iii
  著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
@@ -336,12 +336,12 @@ int fourSumCount(vector<int>& A, vector<int>& B, vector<int>& C, vector<int>& D)
 /*
  658. 找到 K 个最接近的元素
  给定一个排序好的数组，两个整数 k 和 x，从数组中找到最靠近 x（两数之差最小）的 k 个数。返回的结果必须要是按升序排好的。如果有两个数与 x 的差值一样，优先选择数值较小的那个数。
-
+ 
  示例 1:
-
+ 
  输入: [1,2,3,4,5], k=4, x=3
  输出: [1,2,3,4]
-
+ 
  来源：力扣（LeetCode）
  链接：https://leetcode-cn.com/problems/find-k-closest-elements
  著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
@@ -374,10 +374,10 @@ int fourSumCount(vector<int>& A, vector<int>& B, vector<int>& C, vector<int>& D)
 /*
  使用二分法，查找子数组合适的起点。二分逼近
  */
- vector<int> findClosestElements(vector<int>& arr, int k, int x) {
+vector<int> findClosestElements(vector<int>& arr, int k, int x) {
     vector<int> res(k,0);
     int start = 0;
-     //end的初始值，设定二分开始区间为(0,size -k),所以下面用到mid + k 是不会越界的;
+    //end的初始值，设定二分开始区间为(0,size -k),所以下面用到mid + k 是不会越界的;
     int end = arr.size() - k;
     int mid;
     while (start < end) {
@@ -395,3 +395,73 @@ int fourSumCount(vector<int>& A, vector<int>& B, vector<int>& C, vector<int>& D)
     }
     return res;
 }
+
+
+/*
+ 778. 水位上升的泳池中游泳
+ 在一个 N x N 的坐标方格 grid 中，每一个方格的值 grid[i][j] 表示在位置 (i,j) 的平台高度。
+ 
+ 现在开始下雨了。当时间为 t 时，此时雨水导致水池中任意位置的水位为 t 。你可以从一个平台游向四周相邻的任意一个平台，但是前提是此时水位必须同时淹没这两个平台。假定你可以瞬间移动无限距离，也就是默认在方格内部游动是不耗时的。当然，在你游泳的时候你必须待在坐标方格里面。
+ 
+ 你从坐标方格的左上平台 (0，0) 出发。最少耗时多久你才能到达坐标方格的右下平台 (N-1, N-1)？
+ 
+ 示例 1:
+ 
+ 输入: [[0,2],[1,3]]
+ 输出: 3
+ 解释:
+ 时间为0时，你位于坐标方格的位置为 (0, 0)。
+ 此时你不能游向任意方向，因为四个相邻方向平台的高度都大于当前时间为 0 时的水位。
+ 
+ 等时间到达 3 时，你才可以游向平台 (1, 1). 因为此时的水位是 3，坐标方格中的平台没有比水位 3 更高的，所以你可以游向坐标方格中的任意位置
+ 
+ 来源：力扣（LeetCode）
+ 链接：https://leetcode-cn.com/problems/swim-in-rising-water
+ 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+ */
+void dfs(int t,vector<vector<int>>& grid,int i , int j ,vector<vector<bool>> &visit){
+    long size = grid.size();
+    //超出范围，或者不符合条件，或者已经访问。返回。
+    if(i < 0
+       ||i > size - 1
+       ||j < 0
+       ||j > size - 1
+       ||grid[i][j] > t
+       ||visit[i][j]){
+        return;
+    }
+    visit[i][j] = true;
+    dfs(t, grid, i + 1, j, visit);
+    dfs(t, grid, i, j + 1, visit);
+    dfs(t, grid, i - 1, j, visit);
+    dfs(t, grid, i, j - 1, visit);
+}
+
+int swimInWater(vector<vector<int>>& grid) {
+    int left = 0;
+    int right = 0;
+    for (int r = 0; r < grid.size(); ++r) {
+        for (int c = 0; c < grid.size(); ++c) {
+            right = max(right, grid[r][c]);
+            left = min(left, grid[r][c]);
+        }
+    }
+    long size = grid.size();
+    int res = right;
+    //此条件为什么是<=。 因为是查找点，而非查找区间
+    while (left <= right) {
+        int mid = left + (right - left)/2;
+        vector<vector<bool>> visit(size,vector<bool>(size,false));
+        dfs(mid, grid, 0, 0, visit);
+        if(visit[size-1][size-1]){
+            res = mid;
+            right = mid - 1;
+        }
+        else{
+            left = mid + 1;
+        }
+    }
+    return res;
+}
+
+
