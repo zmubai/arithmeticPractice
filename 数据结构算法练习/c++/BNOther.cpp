@@ -427,7 +427,8 @@ void dfs(int t,vector<vector<int>>& grid,int i , int j ,vector<vector<bool>> &vi
        ||j < 0
        ||j > size - 1
        ||grid[i][j] > t
-       ||visit[i][j]){
+       ||visit[i][j]
+       ||visit[size - 1][size - 1]){
         return;
     }
     visit[i][j] = true;
@@ -463,5 +464,181 @@ int swimInWater(vector<vector<int>>& grid) {
     }
     return res;
 }
+
+
+/*719. 找出第 k 小的距离对
+ 给定一个整数数组，返回所有数对之间的第 k 个最小距离。一对 (A, B) 的距离被定义为 A 和 B 之间的绝对差值。
+ 
+ 示例 1:
+ 
+ 输入：
+ nums = [1,3,1]
+ k = 1
+ 输出：0
+ 解释：
+ 所有数对如下：
+ (1,3) -> 2
+ (1,1) -> 0
+ (3,1) -> 2
+ 因此第 1 个最小距离的数对是 (1,1)，它们之间的距离为 0。
+ 提示:
+ 
+ 2 <= len(nums) <= 10000.
+ 0 <= nums[i] < 1000000.
+ 1 <= k <= len(nums) * (len(nums) - 1) / 2.
+ 
+ 来源：力扣（LeetCode）
+ 链接：https://leetcode-cn.com/problems/find-k-th-smallest-pair-distance
+ 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+ 
+ */
+int smallOrEquarK(vector<int>& nums,long mid){
+    int res  = 0;
+    for (int right = 0; right < nums.size(); right ++) {
+        int left = 0;
+        while (nums[right] - nums[left] > mid) {
+            left ++;
+        }
+        res += right - left;
+    }
+    return res;
+}
+
+int smallestDistancePair(vector<int>& nums, int k) {
+    sort(nums.begin(), nums.end());
+    long left = 0;
+    long right = nums[nums.size() - 1] - nums[0];
+    while (left< right) {
+        long  mid = left + (right - left)/2;
+        int count = smallOrEquarK(nums,mid);
+        if(count >= k){
+            right = mid;
+        }
+        else {
+            left = mid + 1;
+        }
+    }
+    return right;
+}
+
+/*
+ 715. Range 模块
+ Range 模块是跟踪数字范围的模块。你的任务是以一种有效的方式设计和实现以下接口。
+
+ addRange(int left, int right) 添加半开区间 [left, right)，跟踪该区间中的每个实数。添加与当前跟踪的数字部分重叠的区间时，应当添加在区间 [left, right) 中尚未跟踪的任何数字到该区间中。
+ queryRange(int left, int right) 只有在当前正在跟踪区间 [left, right) 中的每一个实数时，才返回 true。
+ removeRange(int left, int right) 停止跟踪区间 [left, right) 中当前正在跟踪的每个实数。
+ 
+ addRange(10, 20): null
+ removeRange(14, 16): null
+ queryRange(10, 14): true （区间 [10, 14) 中的每个数都正在被跟踪）
+ queryRange(13, 15): false （未跟踪区间 [13, 15) 中像 14, 14.03, 14.17 这样的数字）
+ queryRange(16, 17): true （尽管执行了删除操作，区间 [16, 17) 中的数字 16 仍然会被跟踪）
+
+ 来源：力扣（LeetCode）
+ 链接：https://leetcode-cn.com/problems/range-module
+ 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+ */
+
+/**
+* Your RangeModule object will be instantiated and called as such:
+* RangeModule* obj = new RangeModule();
+* obj->addRange(left,right);
+* bool param_2 = obj->queryRange(left,right);
+* obj->removeRange(left,right);
+*/
+//vector<pair<int,int>> rangs;
+//
+//   void addRange(int left, int right) {
+//       vector<pair<int, int>> res;
+//       int size = (int)rangs.size();
+//       for(int i = 0; i < size; i ++){
+//          if(rangs[i].first >= right || left >= rangs[i].second){
+//               //不包含
+//               res.push_back(rangs[i]);
+//           }
+//           else{
+//               //包含或存在交集
+//               left = min(left, rangs[i].first);
+//               right = max(right, rangs[i].second);
+//           }
+//       }
+//       res.insert(res.begin(), {left,right});
+//       rangs = res;
+//   }
+//
+//   bool queryRange(int left, int right) {
+//       int size = (int)rangs.size();
+//       for(int i = 0; i < size; i ++){
+//           if(rangs[i].first <= left && rangs[i].second >= right){
+//               return true;
+//           }
+//       }
+//       return false;
+//   }
+//
+//   void removeRange(int left, int right) {
+//      vector<pair<int, int>> res;
+//      int size = (int)rangs.size();
+//      for(int i = 0; i < size; i ++){
+//          if(rangs[i].first > right || left > rangs[i].second){
+//              //不包含 并且不连续(如果 >= || >=的话，对与相连的区间就少了合成的机会。某些情况下会导致边界的重复，如果发生，那么会导致删除函数的不准确)
+//              res.push_back(rangs[i]);
+//          }
+//          else{
+//              //存在交集 或者 包含
+//              if (rangs[i].first < left) {
+//                  res.push_back({rangs[i].first,left});
+//              }
+//              if (rangs[i].second > right)
+//              {
+//                  res.push_back({right,rangs[i].second});
+//              }
+//          }
+//      }
+//      rangs = res;
+//   }
+//
+
+   map<int,int> m;
+    /*
+     查找所在的范围。
+     1.add. 如果不存在，直接返回原范围。否则，返回需要更新的范围
+     2.remove 如果不存在，直接返回原范围。否则，返回交集的范围。
+     */
+    pair<int, int> find(int left,int right){
+        auto l = m.upper_bound(left);
+        auto r = m.upper_bound(right);
+        if (l != m.begin() && (--l)->second < left) {
+            //不存在交集
+            l++;
+        }
+        if (l==r) {
+            return {left,right};
+        }
+        int i = min(left,l->first);
+        int j = max(right,(--r)->second);
+        m.erase(l, ++r);
+        return {i,j};
+    }
+
+   void addRange(int left, int right) {
+       pair<int, int> p = find(left,right);
+       //插入或调整范围
+       m[p.first] = p.second;
+   }
+   
+   bool queryRange(int left, int right) {
+    //获取第一个大于left的pair,如果不是第一个，那么必然存在firs<left的pair，如果这个pair的second大于等于right,那么返回true。
+       auto p = m.upper_bound(left);
+       return p != m.begin() && (--p)->second >= right;
+   }
+   
+   void removeRange(int left, int right) {
+       pair<int, int> p = find(left,right);
+       //去除，[left,right)。更新范围，要保留左侧或右侧的相交的部分。
+       if(p.first < left) m[p.first] = left;
+       if(p.second > right) m[right] = p.second;
+   }
 
 
