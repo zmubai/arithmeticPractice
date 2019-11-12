@@ -642,3 +642,148 @@ int smallestDistancePair(vector<int>& nums, int k) {
    }
 
 
+/*
+ 887. 鸡蛋掉落
+ 你将获得 K 个鸡蛋，并可以使用一栋从 1 到 N  共有 N 层楼的建筑。
+
+ 每个蛋的功能都是一样的，如果一个蛋碎了，你就不能再把它掉下去。
+
+ 你知道存在楼层 F ，满足 0 <= F <= N 任何从高于 F 的楼层落下的鸡蛋都会碎，从 F 楼层或比它低的楼层落下的鸡蛋都不会破。
+
+ 每次移动，你可以取一个鸡蛋（如果你有完整的鸡蛋）并把它从任一楼层 X 扔下（满足 1 <= X <= N）。
+
+ 你的目标是确切地知道 F 的值是多少。
+
+ 无论 F 的初始值如何，你确定 F 的值的最小移动次数是多少？
+
+ 示例 1：
+
+ 输入：K = 1, N = 2
+ 输出：2
+ 解释：
+ 鸡蛋从 1 楼掉落。如果它碎了，我们肯定知道 F = 0 。
+ 否则，鸡蛋从 2 楼掉落。如果它碎了，我们肯定知道 F = 1 。
+ 如果它没碎，那么我们肯定知道 F = 2 。
+ 因此，在最坏的情况下我们需要移动 2 次以确定 F 是多少。
+
+ 来源：力扣（LeetCode）
+ 链接：https://leetcode-cn.com/problems/super-egg-drop
+ 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+ */
+/*
+ k个鸡蛋  N层楼
+ dp[i][j] i个鸡蛋，j层楼 用的次数
+ 假设在 x层扔下鸡蛋
+ 1. 鸡蛋没有碎 dp[i][j-x]
+ 2. 鸡蛋碎了 dp[i-1][x-1]
+ dp[i][j] = min(dp[i][j],1 + max(dp[i][j-x],dp[i-1][x-1]))
+ */
+// Time Limit Exceeded
+//int superEggDrop(int K, int N) {
+//    vector<vector<int>> dp(K + 1, vector<int>(N + 1));
+//    for (int i = 1; i <= N; i ++) {
+//        dp[1][i] = i;
+//    }
+//    //2 - K 个鸡蛋
+//    for (int i = 2;i <= K; ++i){
+//        // 1 - N 层
+//        for (int j = 1; j <= N; ++j) {
+//            //赋值最大次数
+//            dp[i][j] = j;
+//            //鸡蛋有可能在任何一层砸碎
+//            for (int x = 1; x < j; ++x) {
+//                dp[i][j] = min(dp[i][j], 1 + max(dp[i][j - x], dp[i -1][x -1]));
+//            }
+//        }
+//    }
+//    return dp[K][N];
+//}
+
+
+//
+//int superEggDrop(int K, int N) {
+//    vector<vector<int>> dp (K+1,vector<int>(N+1,0));
+//    for (int i = 1; i <= N; ++i) {
+//        //只有一个鸡蛋的时候，最坏的情况就是逐层测试
+//        dp[1][i] = i;
+//    }
+//
+//    for (int i = 2; i <= K; ++ i) {
+//        for (int j = 2; j <= N; ++ j ) {
+//            //赋值最保险的次数
+//            dp[i][j] = j;
+//            //鸡蛋每一层抛出的情况测试（碎/不碎）
+//            int left = 1;
+//            int right = j;
+//            int mid = 1;
+//            while (left < right) {
+//                mid = left + (right - left)/2;
+//                if (dp[i][j-mid] < dp[i-1][mid-1]) {
+//                    left = mid + 1;
+//                }
+//                else{
+//                    right = mid;
+//                }
+//            }
+//            dp[i][j] = min(dp[i][j], max(dp[i][j-right], dp[i-1][right-1]));
+//        }
+//    }
+//    return dp[K][N];
+//}
+
+// dp[i][j] i鸡蛋，j层 二分 ok
+//int superEggDrop(int K, int N) {
+//    vector<vector<int>> dp (K+1,vector<int>(N+1));
+//    //赋基础值
+//    for (int i = 1 ; i <= N; ++i) {
+//        dp[1][i] = i;
+//    }
+//    //2 - K egg
+//    for (int i = 2; i <= K; ++i) {
+//        // 1 - N floor
+//        for (int j = 1; j <= N; ++j) {
+//            //赋保险值
+//            dp[i][j] = j;
+//            int left = 1;
+//            int right = j;
+//            //二分查找临界点
+//            while (left<right) {
+//                int mid = left + (right - left)/2;
+//                if (dp[i - 1][mid -1] < dp[i][j - mid]) {
+//                    //mid 过小 向右偏移
+//                    left = mid + 1;
+//                }
+//                else{
+//                    //mid 过大，向左偏移
+//                    right = mid;
+//                }
+//            }
+//            ///为什么最后right是临界点呢
+//            dp[i][j] = min(dp[i][j], 1 + max(dp[i-1][right-1],dp[i][j-right]));
+//        }
+//    }
+//    return dp[K][N];
+//}
+
+int superEggDrop(int K, int N) {
+    vector<vector<int>> dp (K+1,vector<int>(N+1));
+    //赋基础值
+    for (int i = 1 ; i <= N; ++i) {
+        dp[1][i] = i;
+    }
+    //2 - K egg
+    for (int i = 2; i <= K; ++i) {
+        // 1 - N floor
+        int s = 1;
+        for (int j = 1; j <= N; ++j) {
+            //赋保险值
+            dp[i][j] = j;
+            //随着楼层的增加 s会变大。
+            while (dp[i - 1][s -1] < dp[i][j - s]) {
+                s++;
+            }
+            dp[i][j] = min(dp[i][j], 1 + max(dp[i-1][s-1],dp[i][j-s]));
+        }
+    }
+    return dp[K][N];
+}
