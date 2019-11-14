@@ -787,3 +787,46 @@ int superEggDrop(int K, int N) {
     }
     return dp[K][N];
 }
+
+/*
+ 1123. 最深叶节点的最近公共祖先
+ */
+struct TreeNode {
+     int val;
+     TreeNode *left;
+     TreeNode *right;
+     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+
+TreeNode*  findDeepComm(TreeNode* root,int *deep){
+    if (root != nullptr) {
+        *deep += 1;
+    }
+    int *dL = (int*)malloc(sizeof(int));
+    int *dR = (int*)malloc(sizeof(int));
+    *dL = *deep;
+    *dR = *deep;
+    TreeNode *nl = root;
+    if(root->left){
+        nl = findDeepComm(root->left, dL);
+    }
+    TreeNode *nr = root;
+    if (root->right) {
+        nr = findDeepComm(root->right, dR);
+    }
+    if (*dL == *dR) {
+        *deep = *dL;
+        return root;
+    }
+    else{
+        *deep = *dL > *dR ? *dL:*dR;
+        return *dL > *dR ? nl : nr;
+    }
+}
+
+//如果深度最深的叶子节点，没有堂兄弟节点，且如果没有兄弟节点，那么自己就是最近公共祖先。如果有堂兄弟节点，那么需要向上查找最近公共祖先。
+TreeNode* lcaDeepestLeaves(TreeNode* root) {
+    int *deep = (int*)malloc(sizeof(int));;
+    *deep = 0;
+    return findDeepComm(root,deep);
+}
