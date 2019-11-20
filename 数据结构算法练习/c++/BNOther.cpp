@@ -9,6 +9,8 @@
 #include "BNOther.hpp"
 #include "vector"
 #include "map"
+#include "stack"
+#include "string"
 /*
  292. Nim游戏
  你和你的朋友，两个人一起玩 Nim游戏：桌子上有一堆石头，每次你们轮流拿掉 1 - 3 块石头。 拿掉最后一块石头的人就是获胜者。你作为先手。
@@ -830,3 +832,233 @@ TreeNode* lcaDeepestLeaves(TreeNode* root) {
     *deep = 0;
     return findDeepComm(root,deep);
 }
+
+/*
+ 807. 保持城市天际线
+ */
+int maxIncreaseKeepingSkyline(vector<vector<int>>& grid) {
+    long hSize = grid.size();
+    long vSize = grid[0].size();
+    vector<int> hMaxArr (hSize,0);
+    vector<int> vMaxArr (vSize,0);
+    //先获取 hMaxArr vMaxArr
+    for (int i = 0; i < hSize ; i ++) {
+        for (int j = 0 ; j < vSize; j ++) {
+            if(grid[i][j]>hMaxArr[i]){
+                hMaxArr[i] = grid[i][j];
+            }
+            if (grid[i][j]>vMaxArr[j]) {
+                vMaxArr[j] = grid[i][j];
+            }
+        }
+    }
+    int res = 0;
+    for (int i = 0; i < hSize ; i ++) {
+        for (int j=0 ; j < vSize; j ++) {
+            int minLimit = hMaxArr[i] > vMaxArr[j] ? vMaxArr[j] : hMaxArr[i];
+            int mayAdd = minLimit - grid[i][j];
+            if(mayAdd){
+                res += mayAdd;
+            }
+        }
+    }
+    return  res;
+   }
+
+/*
+ 744. 寻找比目标字母大的最小字母
+ */
+//char nextGreatestLetter(vector<char>& letters, char target) {
+//    int big = -1;
+//    int bigIndex = -1;
+//        for(int i = 0; i < letters.size(); i ++){
+//            int len = letters[i] - target;
+//            if(len >= 0)
+//            {
+//               if(len < big|| big == -1){
+//                   big = len;
+//                   bigIndex = i;
+//               }
+//            }
+//        }
+//        if(big){
+//            return letters[big];
+//        }
+//        else{
+//            return letters[0];
+//        }
+//}
+/*
+ 二分法
+ */
+char nextGreatestLetter(vector<char>& letters, char target) {
+    int left = 0;
+    int right = (int)letters.size();
+    while (left < right) {
+        int mid = left + (right - left) / 2;
+        if (mid> 0 && letters[mid - 1] <= target && letters[mid]> target) {
+            return letters[mid];
+        }
+        else{
+            if (letters[mid]<=target) {
+                left = mid + 1;
+            }
+            else{
+                right = mid;
+            }
+        }
+    }
+    return letters[0];
+}
+
+/*
+ 1249. 移除无效的括号
+ */
+string minRemoveToMakeValid(string s) {
+    stack<int> st;
+    map<int,int> map;
+    for (int i = 0; i < s.length(); i ++) {
+        char c = s[i];
+        if (c == '(') {
+            st.push(i);
+        }
+        else if(c == ')'){
+            if (!st.empty()) {
+                st.pop();
+            }
+            else{
+                map[i] = 1;
+            }
+        }
+    }
+    while (!st.empty()) {
+        int i = st.top();
+        st.pop();
+        map[i] = 1;
+    }
+    string res;
+    for (int i = 0; i < s.length(); i ++) {
+        if(map.find(i) == map.end()){
+            res.append(s[i],1);
+        }
+    }
+    return res;
+}
+
+/*
+ 303. 区域和检索 - 数组不可变 simple
+ class NumArray {
+ public:
+     NumArray(vector<int>& nums) {
+         int size = nums.size();
+         sums = vector<int>(size,0);
+         int currentSum = 0;
+         for(int i = 0;i<size;++i){
+             currentSum += nums[i];
+             sums[i] = currentSum;
+         }
+     }
+     
+     int sumRange(int i, int j) {
+         if(i>0){
+             return sums[j] - sums[i-1];
+         }
+         return sums[j];
+     }
+     private:
+         vector<int> sums;
+ };
+ */
+
+/*
+ 435. 无重叠区间
+ **/
+bool intervalsComp(vector<int>a,vector<int>b){
+    if (a[0]<b[0]) {
+        return true;
+    }
+    return false;
+}
+
+int eraseOverlapIntervals(vector<vector<int>>& intervals) {
+    if (intervals.size() <= 0) {
+        return 0;
+    }
+    int len = 0;
+    sort(intervals.begin(), intervals.end(), intervalsComp);
+    /*贪心策略，选择区间上限更小的，为后面提供更多的空间。
+     1.没有重叠，继续下一轮循环。
+     2.如果有重叠，那么舍弃上限大的，选择上限小的。
+     **/
+    int last = 0;
+    for (int i = 1 ; i < intervals.size(); ++i) {
+        if (intervals[last][1]<=intervals[i][0]) {
+            last = i;
+            continue;
+        }
+        else{
+            len ++;
+            last = intervals[last][1] <= intervals[i][1] ? last : i;
+        }
+    }
+    return len;
+}
+
+/*
+ 1262. 可被三整除的最大和
+ **/
+static bool compDesc(int a,int b){
+    return a > b;
+}
+
+int adjustSum(int rem ,int sum,vector<int> v1,vector<int> v2){
+    if (rem == 1) {
+        if (v1.size() == 0) {
+            return sum - v2[v2.size() - 1] - v2[v2.size() - 2];
+        }
+        else if(v2.size()<2){
+            return sum - v1[v1.size() - 1];
+        }
+        else{
+            int del = min(v2[v2.size() - 1] + v2[v2.size() - 2], v1[v1.size() - 1]);
+            return sum - del;
+        }
+    }
+    else if(rem == 2){
+        if (v1.size()<2) {
+            return sum - v2[v2.size() - 1];
+        }
+        else if (v2.size() == 0){
+            return sum - v1[v1.size() - 1] - v1[v1.size() - 2];
+        }
+        else{
+            int del = min(v2[v2.size() - 1],v1[v1.size() - 1] + v1[v1.size() - 2]);
+            return sum - del;
+        }
+    }
+    return 0;
+}
+int maxSumDivThree(vector<int>& nums) {
+    vector<int> v1;
+    vector<int> v2;
+    int sum =0;
+    for (int i = 0; i < nums.size(); ++i) {
+        sum += nums[i];
+        int r = nums[i] % 3;
+        if(r == 1){
+            v1.push_back(nums[i]);
+        }
+        else if (r == 2){
+            v2.push_back(nums[i]);
+        }
+    }
+    sort(v1.begin(), v1.end(), compDesc);
+    sort(v2.begin(), v2.end(), compDesc);
+    if (sum % 3 == 1) {
+        return adjustSum(1,sum, v1, v2);
+    }
+    else if (sum % 3 == 2){
+        return adjustSum(2,sum, v1, v2);
+    }
+    return sum;
+ }
