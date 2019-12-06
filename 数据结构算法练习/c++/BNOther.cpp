@@ -11,6 +11,8 @@
 #include "map"
 #include "stack"
 #include "string"
+#include "list"
+#include "unordered_map"
 /*
  292. Nim游戏
  你和你的朋友，两个人一起玩 Nim游戏：桌子上有一堆石头，每次你们轮流拿掉 1 - 3 块石头。 拿掉最后一块石头的人就是获胜者。你作为先手。
@@ -526,7 +528,7 @@ int smallestDistancePair(vector<int>& nums, int k) {
 /*
  715. Range 模块
  Range 模块是跟踪数字范围的模块。你的任务是以一种有效的方式设计和实现以下接口。
-
+ 
  addRange(int left, int right) 添加半开区间 [left, right)，跟踪该区间中的每个实数。添加与当前跟踪的数字部分重叠的区间时，应当添加在区间 [left, right) 中尚未跟踪的任何数字到该区间中。
  queryRange(int left, int right) 只有在当前正在跟踪区间 [left, right) 中的每一个实数时，才返回 true。
  removeRange(int left, int right) 停止跟踪区间 [left, right) 中当前正在跟踪的每个实数。
@@ -536,19 +538,19 @@ int smallestDistancePair(vector<int>& nums, int k) {
  queryRange(10, 14): true （区间 [10, 14) 中的每个数都正在被跟踪）
  queryRange(13, 15): false （未跟踪区间 [13, 15) 中像 14, 14.03, 14.17 这样的数字）
  queryRange(16, 17): true （尽管执行了删除操作，区间 [16, 17) 中的数字 16 仍然会被跟踪）
-
+ 
  来源：力扣（LeetCode）
  链接：https://leetcode-cn.com/problems/range-module
  著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
 
 /**
-* Your RangeModule object will be instantiated and called as such:
-* RangeModule* obj = new RangeModule();
-* obj->addRange(left,right);
-* bool param_2 = obj->queryRange(left,right);
-* obj->removeRange(left,right);
-*/
+ * Your RangeModule object will be instantiated and called as such:
+ * RangeModule* obj = new RangeModule();
+ * obj->addRange(left,right);
+ * bool param_2 = obj->queryRange(left,right);
+ * obj->removeRange(left,right);
+ */
 //vector<pair<int,int>> rangs;
 //
 //   void addRange(int left, int right) {
@@ -602,64 +604,64 @@ int smallestDistancePair(vector<int>& nums, int k) {
 //   }
 //
 
-   map<int,int> m;
-    /*
-     查找所在的范围。
-     1.add. 如果不存在，直接返回原范围。否则，返回需要更新的范围
-     2.remove 如果不存在，直接返回原范围。否则，返回交集的范围。
-     */
-    pair<int, int> find(int left,int right){
-        auto l = m.upper_bound(left);
-        auto r = m.upper_bound(right);
-        if (l != m.begin() && (--l)->second < left) {
-            //不存在交集
-            l++;
-        }
-        if (l==r) {
-            return {left,right};
-        }
-        int i = min(left,l->first);
-        int j = max(right,(--r)->second);
-        m.erase(l, ++r);
-        return {i,j};
+map<int,int> m;
+/*
+ 查找所在的范围。
+ 1.add. 如果不存在，直接返回原范围。否则，返回需要更新的范围
+ 2.remove 如果不存在，直接返回原范围。否则，返回交集的范围。
+ */
+pair<int, int> find(int left,int right){
+    auto l = m.upper_bound(left);
+    auto r = m.upper_bound(right);
+    if (l != m.begin() && (--l)->second < left) {
+        //不存在交集
+        l++;
     }
+    if (l==r) {
+        return {left,right};
+    }
+    int i = min(left,l->first);
+    int j = max(right,(--r)->second);
+    m.erase(l, ++r);
+    return {i,j};
+}
 
-   void addRange(int left, int right) {
-       pair<int, int> p = find(left,right);
-       //插入或调整范围
-       m[p.first] = p.second;
-   }
-   
-   bool queryRange(int left, int right) {
+void addRange(int left, int right) {
+    pair<int, int> p = find(left,right);
+    //插入或调整范围
+    m[p.first] = p.second;
+}
+
+bool queryRange(int left, int right) {
     //获取第一个大于left的pair,如果不是第一个，那么必然存在firs<left的pair，如果这个pair的second大于等于right,那么返回true。
-       auto p = m.upper_bound(left);
-       return p != m.begin() && (--p)->second >= right;
-   }
-   
-   void removeRange(int left, int right) {
-       pair<int, int> p = find(left,right);
-       //去除，[left,right)。更新范围，要保留左侧或右侧的相交的部分。
-       if(p.first < left) m[p.first] = left;
-       if(p.second > right) m[right] = p.second;
-   }
+    auto p = m.upper_bound(left);
+    return p != m.begin() && (--p)->second >= right;
+}
+
+void removeRange(int left, int right) {
+    pair<int, int> p = find(left,right);
+    //去除，[left,right)。更新范围，要保留左侧或右侧的相交的部分。
+    if(p.first < left) m[p.first] = left;
+    if(p.second > right) m[right] = p.second;
+}
 
 
 /*
  887. 鸡蛋掉落
  你将获得 K 个鸡蛋，并可以使用一栋从 1 到 N  共有 N 层楼的建筑。
-
+ 
  每个蛋的功能都是一样的，如果一个蛋碎了，你就不能再把它掉下去。
-
+ 
  你知道存在楼层 F ，满足 0 <= F <= N 任何从高于 F 的楼层落下的鸡蛋都会碎，从 F 楼层或比它低的楼层落下的鸡蛋都不会破。
-
+ 
  每次移动，你可以取一个鸡蛋（如果你有完整的鸡蛋）并把它从任一楼层 X 扔下（满足 1 <= X <= N）。
-
+ 
  你的目标是确切地知道 F 的值是多少。
-
+ 
  无论 F 的初始值如何，你确定 F 的值的最小移动次数是多少？
-
+ 
  示例 1：
-
+ 
  输入：K = 1, N = 2
  输出：2
  解释：
@@ -667,7 +669,7 @@ int smallestDistancePair(vector<int>& nums, int k) {
  否则，鸡蛋从 2 楼掉落。如果它碎了，我们肯定知道 F = 1 。
  如果它没碎，那么我们肯定知道 F = 2 。
  因此，在最坏的情况下我们需要移动 2 次以确定 F 是多少。
-
+ 
  来源：力扣（LeetCode）
  链接：https://leetcode-cn.com/problems/super-egg-drop
  著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
@@ -794,10 +796,10 @@ int superEggDrop(int K, int N) {
  1123. 最深叶节点的最近公共祖先
  */
 struct TreeNode {
-     int val;
-     TreeNode *left;
-     TreeNode *right;
-     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
 TreeNode*  findDeepComm(TreeNode* root,int *deep){
@@ -863,7 +865,7 @@ int maxIncreaseKeepingSkyline(vector<vector<int>>& grid) {
         }
     }
     return  res;
-   }
+}
 
 /*
  744. 寻找比目标字母大的最小字母
@@ -949,24 +951,24 @@ string minRemoveToMakeValid(string s) {
  303. 区域和检索 - 数组不可变 simple
  class NumArray {
  public:
-     NumArray(vector<int>& nums) {
-         int size = nums.size();
-         sums = vector<int>(size,0);
-         int currentSum = 0;
-         for(int i = 0;i<size;++i){
-             currentSum += nums[i];
-             sums[i] = currentSum;
-         }
-     }
-     
-     int sumRange(int i, int j) {
-         if(i>0){
-             return sums[j] - sums[i-1];
-         }
-         return sums[j];
-     }
-     private:
-         vector<int> sums;
+ NumArray(vector<int>& nums) {
+ int size = nums.size();
+ sums = vector<int>(size,0);
+ int currentSum = 0;
+ for(int i = 0;i<size;++i){
+ currentSum += nums[i];
+ sums[i] = currentSum;
+ }
+ }
+ 
+ int sumRange(int i, int j) {
+ if(i>0){
+ return sums[j] - sums[i-1];
+ }
+ return sums[j];
+ }
+ private:
+ vector<int> sums;
  };
  */
 
@@ -1061,4 +1063,557 @@ int maxSumDivThree(vector<int>& nums) {
         return adjustSum(2,sum, v1, v2);
     }
     return sum;
- }
+}
+
+/*
+ 15. 三数之和
+ 给定一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？找出所有满足条件且不重复的三元组。
+ 
+ 注意：答案中不可以包含重复的三元组。
+ 
+ 例如, 给定数组 nums = [-1, 0, 1, 2, -1, -4]，
+ 
+ 满足要求的三元组集合为：
+ [
+ [-1, 0, 1],
+ [-1, -1, 2]
+ ]
+ */
+/*开始审题不对。我以为有两个条件，数组的元素不能重复使用，还有就是结果集不能重复。但例子告诉我们，数组中的元素是可以重复使用的。如果这样元素移除的问题处理就比较麻烦。
+ 
+ **/
+
+vector<vector<int>> threeSum(vector<int>& nums) {
+    vector<vector<int>> res;
+    sort(nums.begin(), nums.end());
+    if (nums.size() < 3) {
+        return res;
+    }
+    for (int i = 0; i < nums.size(); ++i) {
+        int v = nums[i];
+        if(v > 0){
+            break;
+        }
+        else{
+            int target = 0 - nums[i];
+            if(i>0 && nums[i] == nums[i-1]) {continue;}
+            int left = i + 1;
+            int right = (int)nums.size() - 1;
+            while (left > i && left< right) {
+                if (nums[left] + nums[right] == target) {
+                    vector<int> r;
+                    r.push_back(nums[i]);
+                    r.push_back(nums[left]);
+                    r.push_back(nums[right]);
+                    res.push_back(r);
+                    while (left<right) {
+                        if(nums[left + 1] == nums[left]){left++;}
+                        else{break;}
+                    }
+                    while (left<right) {
+                        if(nums[right - 1] == nums[right]){right --;}
+                        else{break;}
+                    }
+                    ++left;--right;
+                }
+                else if(nums[left] + nums[right] < target){
+                    left ++;
+                }
+                else{
+                    right --;
+                }
+            }
+        }
+    }
+    return res;
+}
+
+/*
+ 11. 盛最多水的容器
+ */
+//int min(int a,int b){
+//    return a < b ? a:b;
+//}
+
+int maxArea(vector<int>& height)
+{
+    int max = 0;
+    int left = 0;
+    int right = (int)height.size() - 1;
+    while (left<right) {
+        int per = (right - left) * min(height[left],height[right]);
+        max = max>per?max:per;
+        if(height[left] < height[right]){
+            left ++;
+        }
+        else{
+            right --;
+        }
+    }
+    return max;
+}
+
+struct ListNode {
+    int val;
+    ListNode *next;
+    ListNode(int x) : val(x), next(NULL) {}
+};
+
+/*
+ 61. 旋转链表
+ **/
+ListNode* rotateRight(ListNode* head, int k) {
+    if(k ==0 || head == NULL){return head;}
+    int subLen =1;
+    int len = 1;
+    
+    ListNode *preSubHead = NULL;
+    ListNode *subHead = head;
+    ListNode *subCurrent = subHead;
+    
+    ListNode *current = head;
+    while(current ->next !=NULL){
+        len ++;
+        subCurrent->next = current->next;
+        current = current->next;
+        subCurrent = subCurrent->next;
+        if (subLen < k) {
+            subLen ++;
+        } else {
+            preSubHead = subHead;
+            subHead = subHead->next;
+        }
+    }
+    if(subLen < k){
+        int realK = k % len;
+        return rotateRight(head,realK);
+    }
+    else if(subLen == k){
+        return head;
+    }
+    preSubHead->next = NULL;
+    subCurrent->next = head;
+    return subHead;
+}
+
+/*
+ 54. 螺旋矩阵
+ */
+
+vector<int> spiralOrder(vector<vector<int>>& matrix) {
+    
+    int left = 0;
+    int right = 1;
+    int up  = 2;
+    int dowm  = 3;
+    int top = up;
+    int bottom = dowm;
+    
+    int undefine = -1;
+    //左右上下边界，已经完成的
+    vector<int> edges(4,undefine);
+    vector<int>res;
+    
+    int rowSzie = (int)matrix.size();
+    if(rowSzie == 0){return res;}
+    int cloSize = (int)matrix[0].size();
+    int size =(int)(cloSize * rowSzie);
+    
+    //初始化开始状态
+    int direction = right;
+    int i = 0;
+    int j = 0;
+    
+    while (res.size() < size) {
+        if (direction == right) {
+            if ((edges[right] == undefine && j < cloSize)||
+                j < edges[right]) {
+                res.push_back(matrix[i][j]);
+                j ++;
+            }
+            else{
+                edges[top] = i;
+                ++i;
+                --j;
+                direction = dowm;
+            }
+        }
+        else if(direction == dowm){
+            if ((edges[bottom] == undefine && i < rowSzie)||
+                i < edges[bottom]) {
+                res.push_back(matrix[i][j]);
+                i ++;
+            }
+            else{
+                edges[right] = j;
+                --j;
+                --i;
+                direction = left;
+            }
+        }
+        else if (direction == left){
+            if ((edges[left] == undefine && j > 0)||
+                j > edges[left]) {
+                res.push_back(matrix[i][j]);
+                j --;
+            }
+            else{
+                edges[bottom] = i;
+                -- i;
+                ++ j;
+                direction = up;
+            }
+        }
+        else{
+            if ((edges[top] == undefine && i > 0)||
+                i > edges[top]) {
+                res.push_back(matrix[i][j]);
+                i --;
+            }
+            else{
+                edges[left] = j;
+                ++j;
+                ++i;
+                direction = right;
+            }
+        }
+    }
+    return res;
+}
+
+/*
+ 16. 最接近的三数之和
+ **/
+
+///比较笨的方法
+//int threeSumClosest(vector<int>& nums, int target) {
+//    sort(nums.begin(),nums.end());
+//    int undefine = nums[nums.size() - 1] * 3;
+//    int res = undefine;
+//    for (int i = 0 ; i < nums.size() - 2; ++ i) {
+//        for (int j = 1; j < nums.size() - 1; ++j) {
+//            int dstValue = target - nums[i] - nums[j];
+//            int left = j + 1;
+//            int right = (int)nums.size() - 1;
+//            int lastBigger = undefine;
+//            int lastSmaller = undefine;
+//            while (left <= right) {
+//                int mid = left + (right - left)/2;
+//                if (nums[mid] == dstValue) {
+//                    return target;
+//                }
+//                else if(nums[mid] > dstValue){
+//                    lastBigger = nums[mid];
+//                    right --;
+//                }
+//                else{
+//                    lastSmaller = nums[mid];
+//                    left++;
+//                }
+//            }
+//            int v3;
+//            if(lastBigger != undefine && lastSmaller != undefine){
+//                int v0 = nums[i] + nums[j] + lastBigger;
+//                int v1 = nums[i] + nums[j] + lastSmaller;
+//                v3 = abs(target - v0) < abs(target- v1) ? v0:v1;
+//            }
+//            else if (lastSmaller == undefine){
+//                v3 = nums[i] + nums[j] + lastBigger;
+//            }
+//            else if(lastBigger == undefine){
+//                v3 = nums[i] + nums[j] + lastSmaller;
+//            }
+//            if (res == undefine) {
+//                res = v3;
+//            }
+//            else{
+//                res = abs(target - res) < abs(target- v3) ? res:v3;
+//            }
+//        }
+//    }
+//    return  res;
+//}
+
+int threeSumClosest(vector<int>& nums, int target) {
+    sort(nums.begin(), nums.end());
+    int res = nums[nums.size() - 1] * 3;
+    for (int i = 0; i < nums.size() - 2; ++ i) {
+        int left = i + 1;
+        int right = (int)nums.size() - 1;
+        while (left < right) {
+            int r = nums[i] + nums[left] + nums[right];
+            res = abs(target - res) < abs(target - r)?res:r;
+            if (r > target) {
+                --right;
+            }
+            else if(r < target){
+                ++left;
+            }
+            else{
+                return target;
+            }
+        }
+    }
+    return res;
+}
+
+
+/*
+ 33. 搜索旋转排序数组
+ */
+
+int indexInRange(vector<int>& nums,int left,int right,int target){
+    while (left<=right) {
+        int mid = left + ((right - left) >>1);
+        if (target == nums[mid]) {
+            return mid;
+        }
+        else if(target < nums[mid]){
+            right --;
+        }
+        else{
+            left ++;
+        }
+    }
+    return -1;
+}
+
+int search(vector<int>& nums, int target) {
+    if (nums.size() == 0) {
+        return  -1;
+    }
+    if (nums[nums.size() -1] >= nums[0]) {
+        return indexInRange(nums,0,(int)nums.size() - 1,target);
+    }
+    else{
+        //查找分界线， a,b a >b；
+        int left = 1;
+        int right = (int)nums.size() - 1;
+        while (left <= right) {
+            int mid = left + ((right - left) >> 1);
+            if(nums[mid]<nums[mid-1]){
+                if (target <= nums[nums.size() - 1]) {
+                    return indexInRange(nums,mid,(int)nums.size()-1,target);
+                }
+                else{
+                    return indexInRange(nums,0,mid - 1,target);
+                }
+            }
+            else{
+                if(nums[mid] > nums[right]){
+                    left = mid + 1;
+                }
+                else{
+                    right = mid - 1;
+                }
+            }
+        }
+        return -1;
+    }
+}
+
+/*
+ 238. 除自身以外数组的乘积
+ --
+ 1. 暴力 O(n^2)
+ 2. 迭代并记录结果集，直到 n-1.如果遇到第一个0，那么其他的都是0。依然继续，直到遇到第二个0，或者到n-1. O(n^2)
+ 3. 题解：不包含当前index的乘积 为其前面元素的乘积和后面元素的乘积的乘积。O(n)
+ */
+
+//超时。
+//vector<int> productExceptSelf(vector<int>& nums) {
+//    if (nums.size() <= 0) {
+//        return nums;
+//    }
+//    vector<int> res (nums.size() , 0);
+//    if (nums.size() < 2) {
+//        res[0] = nums[0];
+//        return res;
+//    }
+//    res[0] = 1;
+//    res[1] = nums[0];
+//    for (int i = 1; i < nums.size(); i ++) {
+//        for (int j = 0; j <= i; j ++) {
+//            if(i == j && i < nums.size()) {
+//                if(j + 1 < nums.size()) {
+//                    res[j+1]  = res[j] * nums[i];
+//                }
+//                continue;
+//            }
+//            else {
+//                res[j] *= nums[i];
+//            }
+//        }
+//    }
+//    return res;
+//}
+
+//3. 左右两边之积
+//vector<int> productExceptSelf(vector<int>& nums) {
+//    vector<int> res (nums.size() ,1);
+//    int temp = 1;
+//    for (int i = 0; i < nums.size(); ++ i) {
+//        res[i] = temp;
+//        temp *= nums[i];
+//    }
+//
+//    temp = 1;
+//    for (int i = (int)nums.size() - 1; i >= 0; -- i) {
+//        res[i] *= temp;
+//        temp *= nums[i];
+//    }
+//
+//    return res;
+//}
+
+//优化
+vector<int> productExceptSelf(vector<int>& nums) {
+    int size = (int)nums.size();
+    vector<int> res (size, 1);
+    int left = 1;
+    int right = 1;
+    
+    for (int i = 0; i < size; i ++) {
+        res[i] *= left;
+        left *= nums[i];
+        int j = size - 1 - i;
+        res[j] *= right;
+        right *= nums[j];
+    }
+    return res;
+}
+
+
+/*
+ 236. 二叉树的最近公共祖先
+ */
+//TreeNode* findNode(TreeNode* root, TreeNode* p, TreeNode* q);
+//TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+//    return findNode(root, p, q);
+//}
+
+// 如果找到其中一个那么返回找到的那个，如果两个都找不到返回null， 如果两个都找到返回最近公共祖先
+TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+    if (root == NULL) {
+        return NULL;
+    }
+    else if (root->val == p->val || root->val == q->val) {
+        return root;
+    }
+    else{
+        TreeNode* left = lowestCommonAncestor(root->left, p, q);
+        TreeNode* right = lowestCommonAncestor(root->right, p, q);
+        if(left != NULL && right != NULL){
+            //如果left right 分别有值，那么必然是左右分别找到两个节点。
+            return root;
+        }
+        else if(left != NULL){
+            return left;
+        }
+        else{
+            // right有值 或为NULL
+            return right;
+        }
+    }
+}
+
+/*
+ 142. 环形链表 II
+ */
+//ListNode *detectCycle(ListNode *head) {
+//    ListNode *low = head;
+//    ListNode *fast = head;
+//    while (fast != NULL){
+//        low  = low -> next;
+//        fast = fast -> next;
+//        if (fast == NULL) {return NULL;}
+//        fast = fast -> next;
+//        if (low == fast){
+//            low = head;
+//            while (low != fast) {
+//                low = low -> next;
+//                fast = fast -> next;
+//            }
+//            return low;
+//        }
+//    }
+//    return NULL;
+//}
+
+
+//haxi处理
+ListNode *detectCycle(ListNode *head) {
+    map<ListNode*, int> m;
+    while (head != NULL) {
+        if (m.find(head) != m.end()) {
+            return head;
+        }
+        m[head] = 1;
+        head = head -> next;
+    }
+    return NULL;
+}
+
+/*
+ 146. LRU缓存机制
+ **/
+/*
+ 使用map来存取,
+ 使用list 调整最近元素。
+ https://www.cnblogs.com/yc_sunniwell/archive/2010/06/25/1764934.html
+ (1) 每种容器类型都定义了自己的迭代器类型，如vector:
+ vector<int>::iterator iter;这条语句定义了一个名为iter的变量，它的数据类型是由vector<int>定义的iterator类型。
+ **/
+class LRUCache {
+public:
+    
+
+    
+    LRUCache(int capacity) {
+        maxSize = capacity;
+    }
+    
+    int get(int key) {
+        if (m.find(key) != m.end()){
+            pair<int, int> p = *m[key];
+            llist.erase(m[key]);
+            llist.push_front(p);
+            m[key] = llist.begin();
+            return p.second;
+        }
+        return -1;
+    }
+    
+    void put(int key, int value) {
+        if (m.find(key) != m.end()) {
+            llist.erase(m[key]);
+            llist.push_front(make_pair(key, value));
+            m[key] = llist.begin();
+        }
+        else {
+            if (m.size() == maxSize) {
+                m.erase(m.find(llist.back().first));
+                llist.pop_back();
+            }
+            llist.push_front(make_pair(key, value));
+            m[key] = llist.begin();
+            
+        }
+    }
+    
+    private:
+    //pair <key,value>
+    list<pair<int, int>> llist;
+    //unordered_map
+    unordered_map<int, list<pair<int, int>>::iterator> m;
+    int maxSize;
+    /**
+        list 的方法
+     最后元素.back()
+     弹出元素pop_back pop_front()
+            删除erase(const *type vale)
+     插入 push_back()、push_front()
+     
+     */
+   
+};

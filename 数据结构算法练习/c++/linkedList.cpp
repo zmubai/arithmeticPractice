@@ -167,70 +167,70 @@ bool findNode(TreeNode* root, TreeNode* x,vector<TreeNode*>& v)
 
 /*用两个向量容器记录查找的路径，通过路径找到最后一个相同元素，即为最近公共父节点*/
 ///任何的二叉树找最近公共父节点都可以
-TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-    vector<TreeNode*> vp;
-    vector<TreeNode*> vq;
-    bool a = findNode(root, p, vp);
-    //    cout << "#"<<"";
-    bool b =  findNode(root, q, vq);
-    if(root != p)
-    {
-        vp.push_back(root);
-    }
-    if(root != q)
-    {
-        vq.push_back(root);
-    }
-    if (a && b) {
-        long i = vp.size();
-        long j = vq.size();
-        while (i >=0 && j >=0) {
-            if(vp[i] != vq[j])
-            {
-                return vp[i + 1];
-            }
-            else if(i == 0)
-            {
-                return vp[i];
-            }
-            else if (j == 0)
-            {
-                return vq[j];
-            }
-            i --;
-            j --;
-        }
-        
-        return NULL;
-    }
-    else
-    {
-        return NULL;
-    }
-    // return NULL;
-}
+//TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+//    vector<TreeNode*> vp;
+//    vector<TreeNode*> vq;
+//    bool a = findNode(root, p, vp);
+//    //    cout << "#"<<"";
+//    bool b =  findNode(root, q, vq);
+//    if(root != p)
+//    {
+//        vp.push_back(root);
+//    }
+//    if(root != q)
+//    {
+//        vq.push_back(root);
+//    }
+//    if (a && b) {
+//        long i = vp.size();
+//        long j = vq.size();
+//        while (i >=0 && j >=0) {
+//            if(vp[i] != vq[j])
+//            {
+//                return vp[i + 1];
+//            }
+//            else if(i == 0)
+//            {
+//                return vp[i];
+//            }
+//            else if (j == 0)
+//            {
+//                return vq[j];
+//            }
+//            i --;
+//            j --;
+//        }
+//
+//        return NULL;
+//    }
+//    else
+//    {
+//        return NULL;
+//    }
+//    // return NULL;
+//}
 
 ///利用二叉搜索树的d特点
-TreeNode* lowestCommonAncestorx(TreeNode* root, TreeNode* p, TreeNode* q) {
-    if(root == NULL)return NULL;
-    ///考虑相等的情况
-    if ((root->val <= p->val && root->val >= q->val)||
-        (root->val >= p->val && root->val <= q->val))
-    {
-        return root;
-    }
-    else if (root->val < p->val && root->val < q->val ) {
-        return  lowestCommonAncestor(root->right, p, q);
-    }
-    else if (root->val > p->val && root->val > q->val )
-    {
-        return  lowestCommonAncestor(root->left, p, q);
-    }
-    else
-    {
-        return NULL;
-    }
-}
+//TreeNode* lowestCommonAncestorx(TreeNode* root, TreeNode* p, TreeNode* q) {
+//    if(root == NULL)return NULL;
+//    ///考虑相等的情况
+//    if ((root->val <= p->val && root->val >= q->val)||
+//        (root->val >= p->val && root->val <= q->val))
+//    {
+//        return root;
+//    }
+//    else if (root->val < p->val && root->val < q->val ) {
+//        return  lowestCommonAncestor(root->right, p, q);
+//    }
+//    else if (root->val > p->val && root->val > q->val )
+//    {
+//        return  lowestCommonAncestor(root->left, p, q);
+//    }
+//    else
+//    {
+//        return NULL;
+//    }
+//}
 
 /*
  160. 相交链表
