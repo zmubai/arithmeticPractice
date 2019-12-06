@@ -1613,7 +1613,8 @@ public:
      弹出元素pop_back pop_front()
             删除erase(const *type vale)
      插入 push_back()、push_front()
-     
+     获取iterator 对于的元素 可以解引用
+        本题 pair<int, int> p = *m[key]; //m[key] 为iterator
      */
    
 };
