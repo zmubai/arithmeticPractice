@@ -1616,5 +1616,124 @@ public:
      获取iterator 对于的元素 可以解引用
         本题 pair<int, int> p = *m[key]; //m[key] 为iterator
      */
-   
 };
+
+
+/*
+ 148. 排序链表
+ 在 O(n log n) 时间复杂度和常数级空间复杂度下，对链表进行排序。
+ 示例 1:
+
+ 输入: 4->2->1->3
+ 输出: 1->2->3->4
+ */
+
+/*
+ 1.遍历一遍使用数组存储，对数组元素进行快排。再拼装链表输出。O（nlongn） 空间n
+ 2.快慢指针进行归并排序。O(nlongn) 空间n ，递归的方式实现
+ 3.自上而下，遍历的方式，实现归并排序 cut,merge,perHead
+ **/
+
+
+/*
+ 以gap长度切断链表，并返回右边部分的头节点。
+ 此时list为左部分的头结点。返回值为右部分的头结点。
+ */
+ListNode* cut(ListNode* list,int gap);
+/*
+ 合并两个链表，可使用递归或双指针遍历，返回头节点。
+ */
+ListNode* merge(ListNode* list1,ListNode* list2);
+
+/*
+ListNode* sortList(ListNode* head) {
+    ListNode preHead(0);
+    preHead.next = head;
+    auto p = head;
+    int len = 0;
+    while (p != NULL && ++len) {
+        p = p -> next;
+    }
+    
+    for (int size = 1; size < len; size <<= 1) {
+        auto cur = preHead.next;
+        auto tail = &preHead;
+        while (cur != NULL) {
+            auto left = cur;
+            auto right = cut(cur, size);
+            cur = cut(right, size);
+            auto p = merge(left,right);
+            while (p) {
+                tail -> next = p;
+                //偏移到当前节点
+                tail = p;
+                p = p -> next;
+            }
+        }
+    }
+    return preHead.next;
+}
+*/
+
+ListNode* cut(ListNode* list,int gap){
+    while (list != NULL && --gap) {
+        list = list ->next;
+    }
+    if (list == NULL ) { return  NULL;}
+    auto p = list -> next;
+    list -> next = NULL;
+    return p;
+}
+///双指针合并
+ListNode* merge(ListNode* h1,ListNode* h2){
+    ListNode prehead(0);
+    auto res = &prehead;
+    while (h1 != NULL && h2 != NULL) {
+        if (h1 -> val < h2 -> val){
+            res -> next = h1;
+            //偏移到当前节点
+            res = h1;
+            h1 = h1 -> next;
+        } else {
+            res -> next = h2;
+            //偏移到当前节点
+            res = h2;
+            h2 = h2 -> next;
+        }
+    }
+    res -> next = h1 != NULL ? h1 : h2 ;
+    return prehead.next;
+}
+
+//=====
+/*
+ 自上而下 归并 递归。
+ */
+
+ListNode* sortList(ListNode* head) {
+    if (head == NULL || head -> next == NULL) {
+        return head;
+    }
+    ListNode *low = head;
+    ListNode *fast = head;
+    while (fast != NULL) {
+        low = low -> next;
+        fast = fast -> next;
+        if (fast == NULL) {
+            break;
+        }
+        fast = fast -> next;
+    }
+    
+    ListNode *right = low -> next;
+    ListNode *left = head;
+    low -> next  = NULL;
+    
+    left = sortList(left);
+    right = sortList(right);
+    
+    return merge(left,right);
+}
+
+
+
