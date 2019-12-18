@@ -1566,9 +1566,6 @@ ListNode *detectCycle(ListNode *head) {
  **/
 class LRUCache {
 public:
-    
-
-    
     LRUCache(int capacity) {
         maxSize = capacity;
     }
@@ -1601,20 +1598,20 @@ public:
         }
     }
     
-    private:
+private:
     //pair <key,value>
     list<pair<int, int>> llist;
     //unordered_map
     unordered_map<int, list<pair<int, int>>::iterator> m;
     int maxSize;
     /**
-        list 的方法
+     list 的方法
      最后元素.back()
      弹出元素pop_back pop_front()
-            删除erase(const *type vale)
+     删除erase(const *type vale)
      插入 push_back()、push_front()
      获取iterator 对于的元素 可以解引用
-        本题 pair<int, int> p = *m[key]; //m[key] 为iterator
+     本题 pair<int, int> p = *m[key]; //m[key] 为iterator
      */
 };
 
@@ -1623,7 +1620,7 @@ public:
  148. 排序链表
  在 O(n log n) 时间复杂度和常数级空间复杂度下，对链表进行排序。
  示例 1:
-
+ 
  输入: 4->2->1->3
  输出: 1->2->3->4
  */
@@ -1646,34 +1643,34 @@ ListNode* cut(ListNode* list,int gap);
 ListNode* merge(ListNode* list1,ListNode* list2);
 
 /*
-ListNode* sortList(ListNode* head) {
-    ListNode preHead(0);
-    preHead.next = head;
-    auto p = head;
-    int len = 0;
-    while (p != NULL && ++len) {
-        p = p -> next;
-    }
-    
-    for (int size = 1; size < len; size <<= 1) {
-        auto cur = preHead.next;
-        auto tail = &preHead;
-        while (cur != NULL) {
-            auto left = cur;
-            auto right = cut(cur, size);
-            cur = cut(right, size);
-            auto p = merge(left,right);
-            while (p) {
-                tail -> next = p;
-                //偏移到当前节点
-                tail = p;
-                p = p -> next;
-            }
-        }
-    }
-    return preHead.next;
-}
-*/
+ ListNode* sortList(ListNode* head) {
+ ListNode preHead(0);
+ preHead.next = head;
+ auto p = head;
+ int len = 0;
+ while (p != NULL && ++len) {
+ p = p -> next;
+ }
+ 
+ for (int size = 1; size < len; size <<= 1) {
+ auto cur = preHead.next;
+ auto tail = &preHead;
+ while (cur != NULL) {
+ auto left = cur;
+ auto right = cut(cur, size);
+ cur = cut(right, size);
+ auto p = merge(left,right);
+ while (p) {
+ tail -> next = p;
+ //偏移到当前节点
+ tail = p;
+ p = p -> next;
+ }
+ }
+ }
+ return preHead.next;
+ }
+ */
 
 ListNode* cut(ListNode* list,int gap){
     while (list != NULL && --gap) {
@@ -1715,25 +1712,346 @@ ListNode* sortList(ListNode* head) {
         return head;
     }
     ListNode *low = head;
-    ListNode *fast = head;
+    ListNode *fast = head -> next;
     while (fast != NULL) {
-        low = low -> next;
         fast = fast -> next;
         if (fast == NULL) {
             break;
         }
         fast = fast -> next;
+        low = low -> next;
     }
-    
     ListNode *right = low -> next;
     ListNode *left = head;
     low -> next  = NULL;
+    // left = sortList(left);
+    // right = sortList(right);
+    return merge(sortList(left),sortList(right));
+}
+
+/*
+ 215. 数组中的第K个最大元素
+ **/
+
+/*
+ 1.排序后，遍历少端，输出。O(nlogn)
+ 2.使用快排思路，每次舍弃一半，当长度 2k< len <= len的时候进行排序，最后输出K对应位置的个元素。如果是小到大，index为len - k。
+ **/
+int partSort(vector<int>& nums, int k,int left, int right);
+int findKthLargest(vector<int>& nums, int k) {
+    if (nums.size() == 1) {
+        return nums[0];
+    }
+    //    partSort(nums, k, 0, (int)(nums.size() - 1));
+    return partSort(nums, k, 0, (int)(nums.size() - 1));
+}
+
+int partSort(vector<int>& nums, int k,int left, int right) {
+    if (left == right) {
+        return nums[left];
+    }
+    else{
+        
+        int temp = nums[left];
+        int lIndex = left;
+        int rIndex = right + 1;
+        while (1) {
+            while (lIndex < right && nums[++lIndex] <= temp) {}
+            while (rIndex > left && nums[--rIndex] > temp ) {}
+            if(lIndex >= rIndex) { break; }
+            int x = nums[lIndex];
+            nums[lIndex] = nums[rIndex];
+            nums[rIndex] = x;
+        }
+        //一定是rIndex
+        if (nums[rIndex] < temp) {
+            nums[left] =  nums[rIndex];
+            nums[rIndex] = temp;
+        }
+        if(rIndex == nums.size() - k) {
+            return nums[rIndex];
+        }
+        else if (rIndex < nums.size() - k) {
+            return partSort(nums, k, rIndex + 1, right);
+        } else {
+            return partSort(nums, k, left, rIndex - 1);
+        }
+    }
+}
+
+/*
+ 32. 最长有效括号
+ **/
+/*
+ 使用栈
+ 1. 获取s的有效范围。
+ 2.
+ （（（ ）
+ */
+int longestValidParentheses(string s) {
+    stack<int> st;
+    int left = 0;
+    int right = (int)(s.length() - 1);
+    //调整范围
+    while (left < right) {
+        if (s[left] == '(') {
+            break;
+        }
+        left ++;
+    }
+    while (left < right) {
+        if (s[right] == ')') {
+            break;
+        }
+        right --;
+    }
+    if (left == right) {return  0;}
     
-    left = sortList(left);
-    right = sortList(right);
+    //利用栈清楚匹配的括号，留下分界点。
+    for (int i = left; i <= right; i ++) {
+        char c = s[i];
+        if (c == ')' && !st.empty()) {
+            auto p = st.top();
+            if (s[p] == '(') {
+                st.pop();
+            }
+            else {
+                st.push(i);
+            }
+        } else {
+            st.push(i);
+        }
+    }
+    if (st.empty()) {return right - left + 1;}
     
-    return merge(left,right);
+    //根据分界点，计算间隔。要处理左右边界元素包含与否的情况
+    int max = 0;
+    int second = st.top() !=right? right + 1 : right;
+    int index;
+    while (!st.empty()) {
+        index = st.top();
+        if(index == left){break;}
+        if(second - index - 1 > max) {max = second - index - 1;}
+        second = index;
+        st.pop();
+    }
+    if(index == left){
+        if(second - left - 1 > max) {max = second - left - 1;}
+    }
+    else {
+        if(second - left > max) {max = second - left;}
+    }
+    return max;
+}
+
+/*
+ 124. 二叉树中的最大路径和
+ 给定一个非空二叉树，返回其最大路径和。
+ 
+ 本题中，路径被定义为一条从树中任意节点出发，达到任意节点的序列。该路径至少包含一个节点，且不一定经过根节点。
+ 示例 1:
+ (不太好理解例子1 和 例子2。例子1 跨越根节点，理论上 例子2 也可以跨越根节点，那么最大值应该是 9  + 20 + 15  = 44 而不是  20 + 15 + 7)；
+ 输入: [1,2,3]
+ 
+ 1
+ / \
+ 2   3
+ 
+ 输出: 6
+ 示例 2:
+ 
+ 输入: [-10,9,20,null,null,15,7]
+ 
+    -10
+    / \
+   9  20
+     /  \
+    15   7
+ 
+ 输出: 42
+ */
+
+/*
+ 递归返回 分支合并的总路径和，及其分支之中较大者。
+ 最后存在三个值，  左边分支合并的最大值，左边分支最大值 + 根节点/ 不加跟节点 + 右边分支最大值， 右边分支合并的最大值。取 三者中的最大值返回。（但例子的情况，搞不太清楚了）
+ **/
+
+//0 当前最大分支 +  root ->val
+//1 当前最大的和
+//int max(int a, int b) {
+//    return  a > b ? a : b;
+//}
+/*
+ //超越了30% 。。。。
+ vector<int> subPathSums(TreeNode* root,int *maxPathSum) {
+ vector<int> res(2,INT_MIN) ;
+ if(root == NULL) {
+ return res;
+ }
+ if (root -> val > *maxPathSum) {*maxPathSum = root -> val;}
+ vector<int> l = subPathSums(root -> left,maxPathSum);
+ vector<int> r = subPathSums(root -> right,maxPathSum);
+ res[0] = max(max(l[0],r[0]) + root -> val,root -> val);
+ res[1] = max(max(max(max(max(l[1],r[1]),l[0] + root ->val + r[0]),root -> val),l[0] + root->val),r[0] + root->val);
+ return res;
+ }
+ 
+ 
+ int maxPathSum(TreeNode* root) {
+ if(root->left == NULL && root -> right == NULL) {
+ return root -> val;
+ }
+ int simpleBigNum = root -> val;
+ vector<int> c = subPathSums(root, &simpleBigNum);
+ if(simpleBigNum < 0) return simpleBigNum;
+ if (root -> left && root -> right && (c[1] < root -> left-> val + root -> right ->val)){
+ if (root ->left ->left || root -> left -> right ||root ->right ->left || root -> right -> right){
+ 
+ }
+ else {
+ c[1] = root -> left-> val + root -> right ->val;
+ }
+ }
+ return max(c[0],c[1]);
+ }
+ */
+
+int maxExitPathSum;
+
+int pathSum(TreeNode* root) {
+    if (root == NULL) {
+        return 0;
+    }
+    int l = pathSum(root -> left);
+    int r = pathSum(root -> right);
+    
+    int pathSum = max(max(root -> val,root -> val + max(l,r)),root -> val + l + r);
+    maxExitPathSum = max(maxExitPathSum,pathSum);
+    return max(root -> val, max(l,r) + root -> val);
+}
+
+int maxPathSum(TreeNode* root) {
+    maxExitPathSum = INT_MIN;
+    pathSum(root);
+    return maxExitPathSum;
 }
 
 
+/*
+ 23. 合并K个排序链表
+ */
+/*
+ 获取可选集合，第一轮进行排序，获取元素后， 后补插入到合适的位置，继续获元素，重复这个过程直到最后一个元素。
+ 
+ 各个步骤中存在不同的处理方式，复杂度也不一样。
+ 
+ 1. 使用堆排序，使用快排。
+ 1. 如果使用堆，那么就是维护堆。 如果使用快排，后面插入的时候，可以使用二分查找并插入。 两种处理方式时间浮渣度不一样。
+ **/
 
+/*func 1
+ vector<ListNode*> nodes;
+ 
+ static bool nodesCompAsc(ListNode* n1,ListNode* n2) {
+ return n1 -> val < n2 -> val;
+ }
+ 
+ void sortHead(vector<ListNode*>& lists) {
+ for (int i = 0; i < lists.size(); ++ i) {
+ if (typeid(lists[i]) == typeid(ListNode)){
+ nodes.push_back(lists[i]);
+ }
+ }
+ sort(nodes.begin(), nodes.end(), nodesCompAsc);
+ }
+ 
+ void fillAndReSort(ListNode* node) {
+ if (node == NULL) {return;}
+ int left = 0;
+ int right = (int)nodes.size() - 1;
+ while (left < right) {
+ int mid = left + (right - left) / 2;
+ if (nodes[mid] -> val > node -> val) {
+ right = mid - 1;
+ }
+ else {
+ left = mid + 1;
+ }
+ }
+ nodes.insert(nodes.begin() + left, node);
+ }
+ 
+ ///dummyHead
+ ListNode* mergeItems() {
+ ListNode dummyHead(0);
+ dummyHead.next = &dummyHead;
+ auto tair = dummyHead.next;
+ while (nodes.size()) {
+ tair->next = *nodes.begin();
+ nodes.erase(nodes.begin());
+ tair = tair -> next;
+ fillAndReSort(tair -> next);
+ }
+ return dummyHead.next;
+ }
+ 
+ ListNode* mergeKLists(vector<ListNode*>& lists) {
+ sortHead(lists);
+ return mergeItems();
+ }
+ */
+
+//func 2
+vector<ListNode*> nodes;
+
+void adjustMinHeap(int start,int end) {
+    if(start >= end) {return;}
+    int dad = start;
+    int son = dad * 2 + 1;
+    while (dad >= 0) {
+        if (son + 1 <= end && nodes[son + 1] -> val < nodes[son] ->val) {
+            son += 1;
+        }
+        if (nodes[dad] -> val > nodes[son] -> val) {
+            auto temp = nodes[son];
+            nodes[son] = nodes[dad];
+            nodes[dad] = temp;
+            son = dad;
+            dad = (son - 1) / 2;
+        }
+        else {
+            return;
+        }
+    }
+}
+
+ListNode* mergeKLists(vector<ListNode*>& lists) {
+    for (int i = 0; i < lists.size(); ++ i) {
+        if (lists[i]){
+            nodes.push_back(lists[i]);
+        }
+    }
+    ///初始化堆
+    for (int i = ((int)nodes.size() - 2) / 2; i >= 0; -- i) {
+        adjustMinHeap(i, (int)nodes.size() - 1);
+    }
+    ListNode dummyHead(0);
+    dummyHead.next = &dummyHead;
+    auto tair = dummyHead.next;
+    if (nodes.size() == 0) return NULL;
+    while (nodes.size()) {
+        tair->next = *nodes.begin();
+        tair = tair -> next;
+        if (tair -> next) {
+            nodes[0] = tair -> next;
+        } else {
+            nodes.erase(nodes.begin());
+        }
+        for (int i = ((int)nodes.size() - 2) / 2; i >= 0; -- i) {
+            adjustMinHeap(i, (int)nodes.size() - 1);
+        }
+    }
+    return dummyHead.next;
+}
+
+//func 3 两两合并
